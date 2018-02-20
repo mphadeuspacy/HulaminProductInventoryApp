@@ -13,11 +13,15 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
     public class StandardRepositoryTests
     {
         private ISetUpSpecificationHandler _setUpSpecificationHandler;
+        private IRepository _standardRepository;
+        private IEntity _entity;
 
         [TestInitialize]
         public void SetUp()
         {
             _setUpSpecificationHandler = new StandardSetUpSpecificationHandler();
+            _standardRepository = new StandardRepository(_setUpSpecificationHandler, "FakeConnectionString");
+            _entity = new Product { Id = 1, Name = "FakeName" };
         }
 
         [TestMethod]
@@ -45,66 +49,60 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         public async Task Create_OnFailure_WhenTheEntityIsNull_ReturnFalse()
         {
             // Arrange
-            var standardRepository = new StandardRepository(_setUpSpecificationHandler, "FakeConnectionString");
-            IEntity entity = null;
+            _entity = null;
 
             // Act & Assert
-            await Assert.ThrowsExceptionAsync<BusinessException>(() => standardRepository.CreateAsync(entity));
+            await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
         }
 
         [TestMethod]
         public async Task Create_OnFailure_WhenTheProductIsNotNullButIdLessThan0_ReturnBusinessExceptionThrown()
         {
             // Arrange
-            var standardRepository = new StandardRepository(_setUpSpecificationHandler, "FakeConnectionString");
-            IEntity entity = new Product { Id = -1, Name = "FakeName" };
+            _entity.Id = -1;
 
             // Act & Assert
-            await Assert.ThrowsExceptionAsync<BusinessException>(() => standardRepository.CreateAsync(entity));
+            await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
         }
 
         [TestMethod]
         public async Task Create_OnFailure_WhenTheProductIsNotNullButIdIs0_ReturnBusinessExceptionThrown()
         {
             // Arrange
-            var standardRepository = new StandardRepository(_setUpSpecificationHandler, "FakeConnectionString");
-            IEntity entity = new Product { Id = 0, Name = "FakeName" };
+            _entity.Id = 0;
 
             // Act & Assert
-            await Assert.ThrowsExceptionAsync<BusinessException>(() => standardRepository.CreateAsync(entity));
+            await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
         }
 
         [TestMethod]
         public async Task Create_OnFailure_WhenTheProductIsNotNullButNameIsNull_ReturnBusinessExceptionThrown()
         {
             // Arrange
-            var standardRepository = new StandardRepository(_setUpSpecificationHandler, "FakeConnectionString");
-            IEntity entity = new Product { Id = 1, Name = null };
+            _entity = new Product { Id = 1, Name = null };
             
             // Act & Assert
-            await Assert.ThrowsExceptionAsync<BusinessException>(() => standardRepository.CreateAsync(entity));
+            await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
         }
 
         [TestMethod]
         public async Task Create_OnFailure_WhenTheProductIsNotNullButNameIsEmpty_ReturnBusinessExceptionThrown()
         {
             // Arrange
-            var standardRepository = new StandardRepository(_setUpSpecificationHandler, "FakeConnectionString");
-            IEntity entity = new Product { Id = 1, Name = string.Empty };
+            _entity = new Product { Id = 1, Name = string.Empty };
             
             // Act & Assert
-            await Assert.ThrowsExceptionAsync<BusinessException>(() => standardRepository.CreateAsync(entity));
+            await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
         }
 
         [TestMethod]
         public async Task Create_OnFailure_WhenTheProductIsNotNullButNameIsWhiteSpace_ReturnBusinessExceptionThrown()
         {
             // Arrange
-            var standardRepository = new StandardRepository(_setUpSpecificationHandler, "FakeConnectionString");
-            IEntity entity = new Product { Id = 1, Name = "  " };
+            _entity = new Product { Id = 1, Name = "  " };
 
             // Act & Assert
-            await Assert.ThrowsExceptionAsync<BusinessException>(() => standardRepository.CreateAsync(entity));
+            await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
         }
     }
 }
