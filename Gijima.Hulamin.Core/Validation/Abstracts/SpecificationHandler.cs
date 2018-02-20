@@ -1,4 +1,5 @@
 ﻿using Gijima.Hulamin.Core.Entities;
+using Gijima.Hulamin.Core.Exceptions;
 
 namespace Gijima.Hulamin.Core.Validation.Abstracts
 {
@@ -11,6 +12,9 @@ namespace Gijima.Hulamin.Core.Validation.Abstracts
             _specificationHandlerSuccessor = specificationHandlerSuccessor;
         }
         
-        public abstract void HandleSpecificationRequest(IEntity entity);
+        public virtual void HandleSpecificationRequest(IEntity entity)
+        {
+            if (entity == null) throw new BusinessException($"{nameof(SpecificationHandler)}.{nameof(HandleSpecificationRequest)}: '{nameof(entity)}' {HulaminConsts.CannotBeANull}!"); ;
+        }
     }
 }

@@ -4,10 +4,10 @@ namespace Gijima.Hulamin.Core.Validation.Concretes
 {
     public class NotSpecification<TEntity> : CompositeSpecification<TEntity>
     {
-        private ISpecification<TEntity> _other;
+        private readonly ISpecification<TEntity> _this;
 
-        public NotSpecification(ISpecification<TEntity> other) => _other = other;
+        public NotSpecification(ISpecification<TEntity> other) => _this = other;
 
-        public override bool IsSatisfiedBy(TEntity entityCandidate) => _other.IsSatisfiedBy(entityCandidate) == false;
+        public override bool IsSatisfiedBy(TEntity entityCandidate) => _this.IsSatisfiedBy(entityCandidate) == false;
     }
 }

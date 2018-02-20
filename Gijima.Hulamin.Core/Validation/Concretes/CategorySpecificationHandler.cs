@@ -4,7 +4,7 @@ using Gijima.Hulamin.Core.Validation.Abstracts;
 
 namespace Gijima.Hulamin.Core.Validation.Concretes
 {
-    public class CategorySpecificationHandler : SpecificationHandler
+    public sealed class CategorySpecificationHandler : SpecificationHandler
     {
         public CategorySpecificationHandler(SpecificationHandler specificationHandlerSuccessor) 
             : base(specificationHandlerSuccessor)
@@ -13,7 +13,9 @@ namespace Gijima.Hulamin.Core.Validation.Concretes
 
         public override void HandleSpecificationRequest(IEntity entity)
         {
-            if(entity is Category categoryEntity)
+            base.HandleSpecificationRequest(entity);
+
+            if (entity is Category categoryEntity)
             {
                 if (new EntityIdRequiredValidSpecification<Category>().And(new EntityNameRequiredSpecification<Category>()).IsSatisfiedBy(categoryEntity))
                 {

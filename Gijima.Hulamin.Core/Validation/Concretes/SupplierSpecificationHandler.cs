@@ -4,7 +4,7 @@ using Gijima.Hulamin.Core.Validation.Abstracts;
 
 namespace Gijima.Hulamin.Core.Validation.Concretes
 {
-    public class SupplierSpecificationHandler : SpecificationHandler
+    public sealed class SupplierSpecificationHandler : SpecificationHandler
     {
         public SupplierSpecificationHandler(SpecificationHandler specificationHandlerSuccessor) 
             : base(specificationHandlerSuccessor)
@@ -13,6 +13,8 @@ namespace Gijima.Hulamin.Core.Validation.Concretes
 
         public override void HandleSpecificationRequest(IEntity entity)
         {
+            base.HandleSpecificationRequest(entity);
+
             if (entity is Supplier supplierEntity)
             {
                 if (new EntityIdRequiredValidSpecification<Supplier>().And(new EntityNameRequiredSpecification<Supplier>()).IsSatisfiedBy(supplierEntity))
