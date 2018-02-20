@@ -1,4 +1,4 @@
-﻿namespace Gijima.Hulamin.Core.Validation
+﻿namespace Gijima.Hulamin.Core.Validation.Abstracts
 {
     public interface ISpecification<TEntity>
     {

@@ -6,12 +6,12 @@ namespace Gijima.Hulamin.Data.Persistence
 {
     public interface IRepository
     {
-        Task<bool> CreateAsync(IEntity entity);
+        Task CreateAsync(IEntity entity);
 
         Task<List<IEntity>> GetAllAsync();
 
         Task<int> GetByIdAsync(int id);
 
-        Task<bool> UpdateAsync(IEntity entity);
+        Task UpdateAsync(IEntity entity);
     }
 }

@@ -44,12 +44,30 @@
     <Compile Include="Entities\IEntity.cs" />
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\Supplier.cs" />
+    <Compile Include="Exceptions\IErrorCode.cs" />
+    <Compile Include="Exceptions\ILogSeverity.cs" />
+    <Compile Include="Exceptions\LogSeverity.cs" />
+    <Compile Include="Exceptions\BusinessException.cs" />
+    <Compile Include="HulaminConsts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Validation\AndSpecification.cs" />
-    <Compile Include="Validation\CompositeSpecification.cs" />
-    <Compile Include="Validation\ISpecification.cs" />
-    <Compile Include="Validation\NotSpecification.cs" />
-    <Compile Include="Validation\OrSpecification.cs" />
+    <Compile Include="Validation\Abstracts\ISetUpSpecificationHandler.cs" />
+    <Compile Include="Validation\Concretes\AndSpecification.cs" />
+    <Compile Include="Validation\Abstracts\CompositeSpecification.cs" />
+    <Compile Include="Validation\Concretes\CategorySpecificationHandler.cs" />
+    <Compile Include="Validation\Concretes\EntityIdRequiredValidSpecification.cs" />
+    <Compile Include="Validation\Concretes\EntityNameRequiredSpecification.cs" />
+    <Compile Include="Validation\Abstracts\ISpecification.cs" />
+    <Compile Include="Validation\Concretes\ProductSpecificationHandler.cs" />
+    <Compile Include="Validation\Concretes\StandardSetUpSpecificationHandler.cs" />
+    <Compile Include="Validation\Concretes\SupplierSpecificationHandler.cs" />
+    <Compile Include="Validation\SpecificationEnum.cs" />
+    <Compile Include="Validation\Abstracts\SpecificationHandler.cs" />
+    <Compile Include="Validation\Concretes\NotSpecification.cs" />
+    <Compile Include="Validation\Concretes\OrSpecification.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Localization\Source\Hulamin.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

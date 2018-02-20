@@ -1,4 +1,5 @@
 ﻿using Gijima.Hulamin.Core.Entities;
+using Gijima.Hulamin.Core.Exceptions;
 using Gijima.Hulamin.Data.Persistence;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -12,21 +13,21 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         [TestMethod]
         public void StandardRepository_OnFailure_WhenTheConnectionStringIsNull_ReturnThrowAnArgumentException()
         {
-            // Assert
+            // Act & Assert
             Assert.ThrowsException<ArgumentException>(() => new StandardRepository(null));
         }
 
         [TestMethod]
-        public void StandardRepository_OnFailure_WhenTheConnectionStringIsEmpty_ReturnThrowAnArgumentException()
+        public void StandardRepository_OnFailure_WhenTheConnectionStringIsEmpty_ReturnArgumentExceptionThrown()
         {
-            // Assert
+            // Act & Assert
             Assert.ThrowsException<ArgumentException>(() => new StandardRepository(string.Empty));
         }
 
         [TestMethod]
-        public void StandardRepository_OnFailure_WhenTheConnectionStringIsWhiteSpace_ReturnThrowAnArgumentException()
+        public void StandardRepository_OnFailure_WhenTheConnectionStringIsWhiteSpace_ReturnArgumentExceptionThrown()
         {
-            // Assert
+            // Act & Assert
             Assert.ThrowsException<ArgumentException>(() => new StandardRepository(" "));
         }
 
@@ -36,88 +37,64 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
             // Arrange
             var standardRepository = new StandardRepository("FakeConnectionString");
             IEntity entity = null;
-            bool expectedResult = false;
 
-            // Act 
-            bool actualResult = await standardRepository.CreateAsync(entity);
-
-            // Assert
-            Assert.AreEqual(expectedResult, actualResult);
+            // Act & Assert
+            await Assert.ThrowsExceptionAsync<BusinessException>(() => standardRepository.CreateAsync(entity));
         }
 
         [TestMethod]
-        public async Task Create_OnFailure_WhenTheProductIsNotNullButIdLessThan0_ReturnFalse()
+        public async Task Create_OnFailure_WhenTheProductIsNotNullButIdLessThan0_ReturnBusinessExceptionThrown()
         {
             // Arrange
             var standardRepository = new StandardRepository("FakeConnectionString");
             IEntity entity = new Product { Id = -1, Name = "FakeName" };
-            bool expectedResult = false;
 
-            // Act 
-            bool actualResult = await standardRepository.CreateAsync(entity);
-
-            // Assert
-            Assert.AreEqual(expectedResult, actualResult);
+            // Act & Assert
+            await Assert.ThrowsExceptionAsync<BusinessException>(() => standardRepository.CreateAsync(entity));
         }
 
         [TestMethod]
-        public async Task Create_OnFailure_WhenTheProductIsNotNullButIdIs0_ReturnFalse()
+        public async Task Create_OnFailure_WhenTheProductIsNotNullButIdIs0_ReturnBusinessExceptionThrown()
         {
             // Arrange
             var standardRepository = new StandardRepository("FakeConnectionString");
             IEntity entity = new Product { Id = 0, Name = "FakeName" };
-            bool expectedResult = false;
 
-            // Act 
-            bool actualResult = await standardRepository.CreateAsync(entity);
-
-            // Assert
-            Assert.AreEqual(expectedResult, actualResult);
+            // Act & Assert
+            await Assert.ThrowsExceptionAsync<BusinessException>(() => standardRepository.CreateAsync(entity));
         }
 
         [TestMethod]
-        public async Task Create_OnFailure_WhenTheProductIsNotNullButNameIsNull_ReturnFalse()
+        public async Task Create_OnFailure_WhenTheProductIsNotNullButNameIsNull_ReturnBusinessExceptionThrown()
         {
             // Arrange
             var standardRepository = new StandardRepository("FakeConnectionString");
             IEntity entity = new Product { Id = 1, Name = null };
-            bool expectedResult = false;
-
-            // Act 
-            bool actualResult = await standardRepository.CreateAsync(entity);
-
-            // Assert
-            Assert.AreEqual(expectedResult, actualResult);
+            
+            // Act & Assert
+            await Assert.ThrowsExceptionAsync<BusinessException>(() => standardRepository.CreateAsync(entity));
         }
 
         [TestMethod]
-        public async Task Create_OnFailure_WhenTheProductIsNotNullButNameIsEmpty_ReturnFalse()
+        public async Task Create_OnFailure_WhenTheProductIsNotNullButNameIsEmpty_ReturnBusinessExceptionThrown()
         {
             // Arrange
             var standardRepository = new StandardRepository("FakeConnectionString");
             IEntity entity = new Product { Id = 1, Name = string.Empty };
-            bool expectedResult = false;
-
-            // Act 
-            bool actualResult = await standardRepository.CreateAsync(entity);
-
-            // Assert
-            Assert.AreEqual(expectedResult, actualResult);
+            
+            // Act & Assert
+            await Assert.ThrowsExceptionAsync<BusinessException>(() => standardRepository.CreateAsync(entity));
         }
 
         [TestMethod]
-        public async Task Create_OnFailure_WhenTheProductIsNotNullButNameIsWhiteSpace_ReturnFalse()
+        public async Task Create_OnFailure_WhenTheProductIsNotNullButNameIsWhiteSpace_ReturnBusinessExceptionThrown()
         {
             // Arrange
             var standardRepository = new StandardRepository("FakeConnectionString");
             IEntity entity = new Product { Id = 1, Name = "  " };
-            bool expectedResult = false;
 
-            // Act 
-            bool actualResult = await standardRepository.CreateAsync(entity);
-
-            // Assert
-            Assert.AreEqual(expectedResult, actualResult);
+            // Act & Assert
+            await Assert.ThrowsExceptionAsync<BusinessException>(() => standardRepository.CreateAsync(entity));
         }
     }
 }

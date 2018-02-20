@@ -1,4 +1,6 @@
-﻿namespace Gijima.Hulamin.Core.Validation
+﻿using Gijima.Hulamin.Core.Validation.Concretes;
+
+namespace Gijima.Hulamin.Core.Validation.Abstracts
 {
     public abstract class CompositeSpecification<TEntity> : ISpecification<TEntity>
     {

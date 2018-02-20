@@ -1,4 +1,6 @@
-﻿namespace Gijima.Hulamin.Core.Validation
+﻿using Gijima.Hulamin.Core.Validation.Abstracts;
+
+namespace Gijima.Hulamin.Core.Validation.Concretes
 {
     public class OrSpecification<TEntity> : CompositeSpecification<TEntity>
     {
