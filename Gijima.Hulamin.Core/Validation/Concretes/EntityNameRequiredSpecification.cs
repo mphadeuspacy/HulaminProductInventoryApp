@@ -7,7 +7,7 @@ namespace Gijima.Hulamin.Core.Validation.Concretes
     {
         public override bool IsSatisfiedBy(TEntity entityCandidate)
         {
-            if (entityCandidate is IEntity entity) return string.IsNullOrWhiteSpace(entity.Name);
+            if (entityCandidate is IEntity entity) return string.IsNullOrWhiteSpace(entity.Name) == false;
 
             return false;
         }
