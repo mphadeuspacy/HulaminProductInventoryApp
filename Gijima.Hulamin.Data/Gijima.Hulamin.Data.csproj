@@ -51,6 +51,10 @@
       <Project>{38bbe1aa-8b53-4b3d-b93d-6415a1c66898}</Project>
       <Name>Gijima.Hulamin.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Gijima.Hulamin.Db\Gijima.Hulamin.Db.sqlproj">
+      <Project>{992f75a3-0894-4c12-bf75-493e5830679c}</Project>
+      <Name>Gijima.Hulamin.Db</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{63A03AC4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gijima.Hulamin.UnitTests", "Gijima.Hulamin.UnitTests\Gijima.Hulamin.UnitTests.csproj", "{10438E6B-2311-41E7-BA41-F238E980A673}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Gijima.Hulamin.Db", "Gijima.Hulamin.Db\Gijima.Hulamin.Db.sqlproj", "{992F75A3-0894-4C12-BF75-493E5830679C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,12 @@ Global
 		{10438E6B-2311-41E7-BA41-F238E980A673}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10438E6B-2311-41E7-BA41-F238E980A673}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10438E6B-2311-41E7-BA41-F238E980A673}.Release|Any CPU.Build.0 = Release|Any CPU
+		{992F75A3-0894-4C12-BF75-493E5830679C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{992F75A3-0894-4C12-BF75-493E5830679C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{992F75A3-0894-4C12-BF75-493E5830679C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{992F75A3-0894-4C12-BF75-493E5830679C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{992F75A3-0894-4C12-BF75-493E5830679C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{992F75A3-0894-4C12-BF75-493E5830679C}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,6 +67,7 @@ Global
 		{A39858A6-5E9D-4717-9BEE-7BA91765C4B5} = {A0C0F8F9-039F-4981-912B-42FEE736E0B9}
 		{36AF5E28-884C-4D02-B263-25DA3BC1051C} = {AB2327D2-926C-4EC8-8987-77117E8EE08A}
 		{10438E6B-2311-41E7-BA41-F238E980A673} = {63A03AC4-5126-4FC7-8867-0254B68A7EF5}
+		{992F75A3-0894-4C12-BF75-493E5830679C} = {363C35C9-443D-4FEB-A670-57226A216CAF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {16204D54-4115-46A9-A3B9-1521194114F7}

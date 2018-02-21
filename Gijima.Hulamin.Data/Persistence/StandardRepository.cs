@@ -2,9 +2,10 @@
 using Gijima.Hulamin.Core.Entities;
 using System;
 using System.Threading.Tasks;
-using Gijima.Hulamin.Core.Exceptions;
-using Gijima.Hulamin.Core.Validation.Concretes;
 using Gijima.Hulamin.Core.Validation.Abstracts;
+using System.Data;
+using System.Data.SqlClient;
+using Gijima.Hulamin.Core.Exceptions;
 
 namespace Gijima.Hulamin.Data.Persistence
 {
@@ -21,7 +22,30 @@ namespace Gijima.Hulamin.Data.Persistence
 
         public async Task CreateAsync(IEntity entity)
         {
-            ValidateEntity(entity); 
+            ValidateEntity(entity);
+
+            var sqlConnection = new SqlConnection(_connectionString);
+
+            try
+            {                
+                sqlConnection.Open();
+
+                var command = sqlConnection.CreateCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "CreateEntity";
+                
+                command.Parameters.Add(new SqlParameter(nameof(entity.Name), entity.Name));
+
+                command.BeginExecuteNonQuery();                
+            }
+            catch (Exception sqlException)
+            {
+                throw new BusinessException(sqlException.Message);
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
         }
 
         public async Task<List<IEntity>> GetAllAsync()

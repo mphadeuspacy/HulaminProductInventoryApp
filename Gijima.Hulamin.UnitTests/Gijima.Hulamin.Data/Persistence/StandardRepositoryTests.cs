@@ -208,5 +208,17 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
             // Act & Assert
             await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
         }
+
+        [TestMethod]
+        public async Task Create_OnSuccess_WhenTheProductIsValid_ThenDoesNotThrowXnException()
+        {
+            // Arrange
+            _entity = new Product { Id = 1, Name = TestValidName };
+            _standardRepository = new StandardRepository(_setUpSpecificationHandler, @"Data Source=.\;Initial Catalog=Northwind;Persist Security Info=True;User ID=sa;Password=Khsph01@gmailcom");
+            // Act 
+            await _standardRepository.CreateAsync(_entity);
+
+            // Assert            
+        }
     }
 }
