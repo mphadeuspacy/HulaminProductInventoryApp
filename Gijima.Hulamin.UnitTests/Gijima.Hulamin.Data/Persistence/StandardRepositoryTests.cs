@@ -20,6 +20,8 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         private string TestConnectionString => "TestConnectionString";
         private int TestInvalidNegativeOne => -1;
 
+        private bool? TestValidDisconnection => false;
+
         [TestInitialize]
         public void SetUp()
         {
@@ -63,7 +65,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         public async Task Create_OnFailure_WhenTheProductIsNotNullButIdLessThan0_ThenBusinessExceptionThrown()
         {
             // Arrange
-            _entity = new Product { Id = TestInvalidNegativeOne, Name = TestValidName };
+            _entity = new Product { Id = TestInvalidNegativeOne, Name = TestValidName, Discontinued = TestValidDisconnection };
 
             // Act & Assert
             await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
@@ -93,7 +95,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         public async Task Create_OnFailure_WhenTheProductIsNotNullButIdIs0_ThenBusinessExceptionThrown()
         {
             // Arrange
-            _entity = new Product { Id = 0, Name = TestValidName };
+            _entity = new Product { Id = 0, Name = TestValidName, Discontinued = TestValidDisconnection };
 
             // Act & Assert
             await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
@@ -123,7 +125,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         public async Task Create_OnFailure_WhenTheProductIsNotNullButNameIsNull_ThenBusinessExceptionThrown()
         {
             // Arrange
-            _entity = new Product { Id = 1, Name = null };
+            _entity = new Product { Id = 1, Name = null, Discontinued = TestValidDisconnection };
             
             // Act & Assert
             await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
@@ -153,7 +155,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         public async Task Create_OnFailure_WhenTheProductIsNotNullButNameIsEmpty_ThenBusinessExceptionThrown()
         {
             // Arrange
-            _entity = new Product { Id = 1, Name = string.Empty };
+            _entity = new Product { Id = 1, Name = string.Empty, Discontinued = TestValidDisconnection };
             
             // Act & Assert
             await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
@@ -183,11 +185,22 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         public async Task Create_OnFailure_WhenTheProductIsNotNullButNameIsWhiteSpace_ReturnBusinessExceptionThrown()
         {
             // Arrange
-            _entity = new Product { Id = 1, Name = "  " };
+            _entity = new Product { Id = 1, Name = "  ", Discontinued = TestValidDisconnection };
 
             // Act & Assert
             await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
         }
+
+        [TestMethod]
+        public async Task Create_OnFailure_WhenTheProductAndNameAreValidButDisconnectionIsNull_ReturnBusinessExceptionThrown()
+        {
+            // Arrange
+            _entity = new Product { Id = 1, Name = TestValidName, Discontinued = null };
+
+            // Act & Assert
+            await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
+        }
+
 
         [TestMethod]
         public async Task Create_OnFailure_WhenTheSupplierIsNotNullButNameIsWhiteSpace_ReturnBusinessExceptionThrown()
@@ -213,7 +226,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         public async Task Create_OnSuccess_WhenTheProductIsValid_ThenDoesNotThrowXnException()
         {
             // Arrange
-            _entity = new Product { Id = 1, Name = TestValidName };
+            _entity = new Product { Id = 1, Name = TestValidName, Discontinued = TestValidDisconnection };
             _standardRepository = new StandardRepository(_setUpSpecificationHandler, @"Data Source=.\;Initial Catalog=Northwind;Persist Security Info=True;User ID=sa;Password=Khsph01@gmailcom");
             // Act 
             await _standardRepository.CreateAsync(_entity);

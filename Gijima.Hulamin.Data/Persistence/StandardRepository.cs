@@ -13,7 +13,7 @@ namespace Gijima.Hulamin.Data.Persistence
     public class StandardRepository : IRepository
     {
         private SpecificationHandler SpecificationHandler { get; }
-        private string _connectionString;
+        private readonly string _connectionString;
 
         public StandardRepository(ISetUpSpecificationHandler specificationHandlerSetUp, string connectionString)
         {
@@ -25,16 +25,14 @@ namespace Gijima.Hulamin.Data.Persistence
         {
             ValidateEntity(entity);
 
-            var sqlConnection = new SqlConnection(_connectionString);
-
             try
             {
                 if (entity is Product product)
                 {
                     SqlHelper.ExecuteNonQuery(_connectionString, CommandType.StoredProcedure, "CreateProduct",
                         new SqlParameter("@ProductName", product.Name),
-                        new SqlParameter("@SupplierID", product.SupplierID),
-                        new SqlParameter("@CategoryID", product.CategoryID),
+                        new SqlParameter("@SupplierId", product.SupplierId),
+                        new SqlParameter("@CategoryId", product.CategoryId),
                         new SqlParameter("@QuantityPerUnit", product.QuantityPerUnit),
                         new SqlParameter("@UnitPrice", product.UnitPrice),
                         new SqlParameter("@UnitsInStock", product.UnitsInStock),
@@ -69,10 +67,6 @@ namespace Gijima.Hulamin.Data.Persistence
             catch (Exception sqlException)
             {
                 throw new BusinessException(sqlException.Message);
-            }
-            finally
-            {
-                sqlConnection.Close();
             }
         }
 
