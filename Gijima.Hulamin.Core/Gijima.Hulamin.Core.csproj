@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,6 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -54,6 +56,7 @@
     <Compile Include="Validation\Concretes\AndSpecification.cs" />
     <Compile Include="Validation\Abstracts\CompositeSpecification.cs" />
     <Compile Include="Validation\Concretes\CategorySpecificationHandler.cs" />
+    <Compile Include="Validation\Concretes\EntityDiscontinuedRequiredSpecification.cs" />
     <Compile Include="Validation\Concretes\EntityIdRequiredValidSpecification.cs" />
     <Compile Include="Validation\Concretes\EntityNameRequiredSpecification.cs" />
     <Compile Include="Validation\Abstracts\ISpecification.cs" />

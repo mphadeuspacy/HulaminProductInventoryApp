@@ -27,20 +27,7 @@ namespace Gijima.Hulamin.Data.Persistence
 
             try
             {
-                if (entity is Product product)
-                {
-                    SqlHelper.ExecuteNonQuery(_connectionString, CommandType.StoredProcedure, "CreateProduct",
-                        new SqlParameter("@ProductName", product.Name),
-                        new SqlParameter("@SupplierId", product.SupplierId),
-                        new SqlParameter("@CategoryId", product.CategoryId),
-                        new SqlParameter("@QuantityPerUnit", product.QuantityPerUnit),
-                        new SqlParameter("@UnitPrice", product.UnitPrice),
-                        new SqlParameter("@UnitsInStock", product.UnitsInStock),
-                        new SqlParameter("@UnitsOnOrder", product.UnitsOnOrder),
-                        new SqlParameter("@ReorderLevel", product.ReorderLevel),
-                        new SqlParameter("@Discontinued", product.Discontinued));
-                }
-                else if (entity is Category category)
+                if (entity is Category category)
                 {
                     SqlHelper.ExecuteNonQuery(_connectionString, CommandType.StoredProcedure, "CreateCategory",
                         new SqlParameter("@CategoryName", category.Name),
@@ -62,11 +49,32 @@ namespace Gijima.Hulamin.Data.Persistence
                         new SqlParameter("@Fax", supplier.Fax),
                         new SqlParameter("@HomePage", supplier.HomePage));
                 }
+                else if (entity is Product product)
+                {
+                    SqlHelper.ExecuteNonQuery(_connectionString, CommandType.StoredProcedure, "CreateProduct",
+                        new SqlParameter("@ProductName", product.Name),
+                        new SqlParameter("@SupplierId", product.SupplierId),
+                        new SqlParameter("@CategoryId", product.CategoryId),
+                        new SqlParameter("@QuantityPerUnit", product.QuantityPerUnit),
+                        new SqlParameter("@UnitPrice", product.UnitPrice),
+                        new SqlParameter("@UnitsInStock", product.UnitsInStock),
+                        new SqlParameter("@UnitsOnOrder", product.UnitsOnOrder),
+                        new SqlParameter("@ReorderLevel", product.ReorderLevel),
+                        new SqlParameter("@Discontinued", product.Discontinued));
+                }
 
             }
-            catch (Exception sqlException)
+            catch (BusinessException sqlException)
             {
-                throw new BusinessException(sqlException.Message);
+                throw new BusinessException(sqlException.Message, LogSeverity.Error);
+            }
+            catch (SqlException sqlException)
+            {
+                throw new BusinessException(sqlException.Message, LogSeverity.Fatal);
+            }
+            catch (Exception exception)
+            {
+                throw new BusinessException(exception.Message, LogSeverity.Fatal);
             }
         }
 

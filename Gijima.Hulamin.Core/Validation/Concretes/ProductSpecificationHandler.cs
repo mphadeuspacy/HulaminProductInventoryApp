@@ -17,7 +17,10 @@ namespace Gijima.Hulamin.Core.Validation.Concretes
 
             if (entity is Product productEntity)
             {
-                if (new EntityIdRequiredValidSpecification<Product>().And(new EntityNameRequiredSpecification<Product>()).IsSatisfiedBy(productEntity))
+                if (new EntityIdRequiredValidSpecification<Product>()
+                    .And(new EntityNameRequiredSpecification<Product>())
+                    .And(new EntityDiscontinuedRequiredSpecification<Product>())
+                     .IsSatisfiedBy(productEntity))
                 {
                     // TODO: Log this as : ProductSpecificationHandler handles entity
                     return;

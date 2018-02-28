@@ -19,6 +19,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         private string TestValidName => "ValidName";
         private string TestConnectionString => "TestConnectionString";
         private int TestInvalidNegativeOne => -1;
+        private int TestValidOne => 1;
 
         private bool? TestValidDisconnection => false;
 
@@ -27,7 +28,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         {
             _setUpSpecificationHandler = new StandardSetUpSpecificationHandler();
             _standardRepository = new StandardRepository(_setUpSpecificationHandler, TestConnectionString);
-            _entity = null;
+            _entity = new Product { Id = TestValidOne, Name = TestValidName, Discontinued = TestValidDisconnection };
         }
 
         [TestMethod]
@@ -62,7 +63,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         }
 
         [TestMethod]
-        public async Task Create_OnFailure_WhenTheProductIsNotNullButIdLessThan0_ThenBusinessExceptionThrown()
+        public async Task Create_OnFailure_WhenTheProductIsValidButIdLessThan0_ThenBusinessExceptionThrown()
         {
             // Arrange
             _entity = new Product { Id = TestInvalidNegativeOne, Name = TestValidName, Discontinued = TestValidDisconnection };
@@ -72,7 +73,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         }
 
         [TestMethod]
-        public async Task Create_OnFailure_WhenTheSupplierIsNotNullButIdLessThan0_ThenBusinessExceptionThrown()
+        public async Task Create_OnFailure_WhenTheSupplierIsValidButIdLessThan0_ThenBusinessExceptionThrown()
         {
             // Arrange
             _entity = new Supplier { Id = TestInvalidNegativeOne, Name = TestValidName };
@@ -82,7 +83,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         }
 
         [TestMethod]
-        public async Task Create_OnFailure_WhenTheCategoryIsNotNullButIdLessThan0_ThenBusinessExceptionThrown()
+        public async Task Create_OnFailure_WhenTheCategoryIsValidButIdLessThan0_ThenBusinessExceptionThrown()
         {
             // Arrange
             _entity = new Category { Id = TestInvalidNegativeOne, Name = TestValidName };
@@ -92,7 +93,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         }
 
         [TestMethod]
-        public async Task Create_OnFailure_WhenTheProductIsNotNullButIdIs0_ThenBusinessExceptionThrown()
+        public async Task Create_OnFailure_WhenTheProductIsValidButIdIs0_ThenBusinessExceptionThrown()
         {
             // Arrange
             _entity = new Product { Id = 0, Name = TestValidName, Discontinued = TestValidDisconnection };
@@ -102,7 +103,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         }
 
         [TestMethod]
-        public async Task Create_OnFailure_WhenTheSupplierIsNotNullButIdIs0_ThenBusinessExceptionThrown()
+        public async Task Create_OnFailure_WhenTheSupplierIsValidButIdIs0_ThenBusinessExceptionThrown()
         {
             // Arrange
             _entity = new Supplier { Id = 0, Name = TestValidName };
@@ -112,7 +113,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         }
 
         [TestMethod]
-        public async Task Create_OnFailure_WhenTheCategoryIsNotNullButIdIs0_ThenBusinessExceptionThrown()
+        public async Task Create_OnFailure_WhenTheCategoryIsValidButIdIs0_ThenBusinessExceptionThrown()
         {
             // Arrange
             _entity = new Category { Id = 0, Name = TestValidName };
@@ -122,7 +123,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         }
 
         [TestMethod]
-        public async Task Create_OnFailure_WhenTheProductIsNotNullButNameIsNull_ThenBusinessExceptionThrown()
+        public async Task Create_OnFailure_WhenTheProductIsValidButNameIsNull_ThenBusinessExceptionThrown()
         {
             // Arrange
             _entity = new Product { Id = 1, Name = null, Discontinued = TestValidDisconnection };
@@ -132,60 +133,60 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         }
 
         [TestMethod]
-        public async Task Create_OnFailure_WhenTheSupplierIsNotNullButNameIsNull_ThenBusinessExceptionThrown()
+        public async Task Create_OnFailure_WhenTheSupplierIsValidButNameIsNull_ThenBusinessExceptionThrown()
         {
             // Arrange
-            _entity = new Supplier { Id = 1, Name = null };
+            _entity = new Supplier { Id = TestValidOne, Name = null };
 
             // Act & Assert
             await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
         }
 
         [TestMethod]
-        public async Task Create_OnFailure_WhenTheCategoryIsNotNullButNameIsNull_ThenBusinessExceptionThrown()
+        public async Task Create_OnFailure_WhenTheCategoryIsValidButNameIsNull_ThenBusinessExceptionThrown()
         {
             // Arrange
-            _entity = new Category { Id = 1, Name = null };
+            _entity = new Category { Id = TestValidOne, Name = null };
 
             // Act & Assert
             await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
         }
 
         [TestMethod]
-        public async Task Create_OnFailure_WhenTheProductIsNotNullButNameIsEmpty_ThenBusinessExceptionThrown()
+        public async Task Create_OnFailure_WhenTheProductIsValidButNameIsEmpty_ThenBusinessExceptionThrown()
         {
             // Arrange
-            _entity = new Product { Id = 1, Name = string.Empty, Discontinued = TestValidDisconnection };
+            _entity = new Product { Id = TestValidOne, Name = string.Empty, Discontinued = TestValidDisconnection };
             
             // Act & Assert
             await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
         }
 
         [TestMethod]
-        public async Task Create_OnFailure_WhenTheSupplierIsNotNullButNameIsEmpty_ThenBusinessExceptionThrown()
+        public async Task Create_OnFailure_WhenTheSupplierIsValidButNameIsEmpty_ThenBusinessExceptionThrown()
         {
             // Arrange
-            _entity = new Supplier { Id = 1, Name = string.Empty };
+            _entity = new Supplier { Id = TestValidOne, Name = string.Empty };
 
             // Act & Assert
             await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
         }
 
         [TestMethod]
-        public async Task Create_OnFailure_WhenTheCategoryIsNotNullButNameIsEmpty_ThenBusinessExceptionThrown()
+        public async Task Create_OnFailure_WhenTheCategoryIsValidButNameIsEmpty_ThenBusinessExceptionThrown()
         {
             // Arrange
-            _entity = new Category { Id = 1, Name = string.Empty };
+            _entity = new Category { Id = TestValidOne, Name = string.Empty };
 
             // Act & Assert
             await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
         }
 
         [TestMethod]
-        public async Task Create_OnFailure_WhenTheProductIsNotNullButNameIsWhiteSpace_ReturnBusinessExceptionThrown()
+        public async Task Create_OnFailure_WhenTheProductIsVallidButNameIsWhiteSpace_ReturnBusinessExceptionThrown()
         {
             // Arrange
-            _entity = new Product { Id = 1, Name = "  ", Discontinued = TestValidDisconnection };
+            _entity = new Product { Id = TestValidOne, Name = "  ", Discontinued = TestValidDisconnection };
 
             // Act & Assert
             await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
@@ -195,7 +196,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         public async Task Create_OnFailure_WhenTheProductAndNameAreValidButDisconnectionIsNull_ReturnBusinessExceptionThrown()
         {
             // Arrange
-            _entity = new Product { Id = 1, Name = TestValidName, Discontinued = null };
+            _entity = new Product { Id = TestValidOne, Name = TestValidName, Discontinued = null };
 
             // Act & Assert
             await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
@@ -206,7 +207,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         public async Task Create_OnFailure_WhenTheSupplierIsNotNullButNameIsWhiteSpace_ReturnBusinessExceptionThrown()
         {
             // Arrange
-            _entity = new Supplier { Id = 1, Name = "  " };
+            _entity = new Supplier { Id = TestValidOne, Name = "  " };
 
             // Act & Assert
             await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
@@ -216,7 +217,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         public async Task Create_OnFailure_WhenTheCategoryIsNotNullButNameIsWhiteSpace_ReturnBusinessExceptionThrown()
         {
             // Arrange
-            _entity = new Category { Id = 1, Name = "  " };
+            _entity = new Category { Id = TestValidOne, Name = "  " };
 
             // Act & Assert
             await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
@@ -226,12 +227,14 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         public async Task Create_OnSuccess_WhenTheProductIsValid_ThenDoesNotThrowXnException()
         {
             // Arrange
-            _entity = new Product { Id = 1, Name = TestValidName, Discontinued = TestValidDisconnection };
+            _entity = new Product { Id = TestValidOne, Name = TestValidName, Discontinued = TestValidDisconnection };
             _standardRepository = new StandardRepository(_setUpSpecificationHandler, @"Data Source=.\;Initial Catalog=Northwind;Persist Security Info=True;User ID=sa;Password=Khsph01@gmailcom");
+            
             // Act 
             await _standardRepository.CreateAsync(_entity);
 
-            // Assert            
+            // Assert
+            
         }
     }
 }
