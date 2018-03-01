@@ -56,8 +56,8 @@ namespace Gijima.Hulamin.Data.Persistence
                         new SqlParameter("@SupplierId", product.SupplierId),
                         new SqlParameter("@CategoryId", product.CategoryId),
                         new SqlParameter("@QuantityPerUnit", product.QuantityPerUnit),
-                        new SqlParameter("@UnitPrice", product.UnitPrice),
-                        new SqlParameter("@UnitsInStock", product.UnitsInStock),
+                        new SqlParameter("@UnitPrice", product.UnitPrice), 
+                        new SqlParameter("@UnitsInStock", product.UnitsInStock),                        
                         new SqlParameter("@UnitsOnOrder", product.UnitsOnOrder),
                         new SqlParameter("@ReorderLevel", product.ReorderLevel),
                         new SqlParameter("@Discontinued", product.Discontinued));

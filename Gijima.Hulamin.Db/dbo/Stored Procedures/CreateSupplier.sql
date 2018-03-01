@@ -13,6 +13,6 @@
         @HomePage NTEXT = NUll
 AS
     INSERT INTO [dbo].[Suppliers]
-    SELECT  @Name, @ContactName, @ContactTitle, @Address, @City, @Region, @PostalCode, @Country, @Phone, @Fax, @HomePage
+    SELECT  @Name, @ContactName, @ContactTitle, @Address, @City, @Region, @PostalCode, @Country, @Phone, @Fax, @HomePage;
 
 RETURN 0
