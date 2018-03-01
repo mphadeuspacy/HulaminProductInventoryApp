@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[Category]
+﻿CREATE PROCEDURE [dbo].[CreateCategory]
    
         @Name NVARCHAR(15),   
         @Description INT = NULL,
