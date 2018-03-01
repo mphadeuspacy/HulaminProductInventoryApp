@@ -30,6 +30,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
             _standardRepository = new StandardRepository(_setUpSpecificationHandler, TestConnectionString);
             _entity = new Product { Id = TestValidOne, Name = TestValidName, Discontinued = TestValidDisconnection };
         }
+              
 
         [TestMethod]
         public void StandardRepository_OnFailure_WhenTheConnectionStringIsNull_ThenArgumentExceptionThrown()
@@ -256,10 +257,64 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         #endregion
 
         [TestMethod]
-        public async Task GetByIdAsync_OnFailure_WhenTheProductIsValidButIdLessThan0_ThenBusinessExceptionThrown()
+        public async Task GetByIdAsync_OnFailure_WhenTheProductIsValidButIdLessThan0_ThenReturnNull()
         {
-            // Act & Assert
-            await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.GetByIdAsync(TestInvalidNegativeOne));
+            // Arrange
+            IEntity expectedResult = null;
+
+            // Act 
+            IEntity actualResult =  await _standardRepository.GetByIdAsync(TestInvalidNegativeOne);
+
+            // Assert
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+        [TestMethod]
+        public async Task GetByIdAsync_OnFailure_WhenTheProductIsValidButIdIs0_ThenReturnNull()
+        {
+            IEntity expectedResult = null;
+
+            // Act 
+            IEntity actualResult = await _standardRepository.GetByIdAsync(0);
+
+            // Assert
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+        [TestMethod]
+        public async Task GetByIdAsync_OnFailure_WhenTheProductDoesNotExistInTheDataStore_ThenReturnNull()
+        {
+            // Arrange
+            IEntity expectedResult = null;
+
+            // Act 
+            IEntity actualResult = await _standardRepository.GetByIdAsync(-999);
+
+            // Assert
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+        [TestMethod]
+        public async Task GetByIdAsync_OnSuccess_WhenTheProductExistsInTheDataStore_ThenReturnProductInstance()
+        {
+            // Arrange
+            _entity = new Product { Id = TestValidOne, Name = TestValidName, Discontinued = TestValidDisconnection };
+            await _standardRepository.CreateAsync(_entity);
+
+            // Act 
+            IEntity actualResult = await _standardRepository.GetByIdAsync(_entity.Id);
+
+            // Assert
+            Assert.AreEqual(_entity.Id, actualResult.Id);
+            Assert.AreEqual(_entity.Name, actualResult.Name);
+        }
+
+        [TestCleanup]
+        public void CleanUp()
+        {
+            _entity = null;
+            _setUpSpecificationHandler = null;
+            _standardRepository = null;
         }
     }
 }

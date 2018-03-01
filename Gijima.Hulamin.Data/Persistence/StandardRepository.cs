@@ -21,7 +21,7 @@ namespace Gijima.Hulamin.Data.Persistence
             _connectionString = string.IsNullOrWhiteSpace(connectionString) == false ? connectionString : throw new ArgumentException();
         }
 
-        public async Task CreateAsync(IEntity entity)
+        public async Task<int> CreateAsync(IEntity entity)
         {
             ValidateEntity(entity);
 
@@ -76,6 +76,8 @@ namespace Gijima.Hulamin.Data.Persistence
             {
                 throw new BusinessException(exception.Message, LogSeverity.Fatal);
             }
+
+            return null;
         }
 
         public async Task<List<IEntity>> GetAllAsync()
@@ -83,9 +85,37 @@ namespace Gijima.Hulamin.Data.Persistence
             throw new NotImplementedException();
         }
 
-        public async Task<int> GetByIdAsync(int id)
+        public async Task<IEntity> GetByIdAsync(int id)
         {
-            throw new BusinessException();
+            if(id <= 0) return null;
+
+            try
+            {
+                IDataReader productReader = SqlHelper.ExecuteReader(_connectionString, CommandType.StoredProcedure, "GetProductById", new SqlParameter("@Id", id));
+
+                if (productReader.Read())
+                {
+                    return new Product
+                    {
+                        Id = (int)productReader[nameof(Product.Id)],
+                        Name = productReader[nameof(Product.Name)].ToString(),
+                        SupplierId = (int)productReader[nameof(Product.SupplierId)],
+                        CategoryId = (int)productReader[nameof(Product.CategoryId)],
+                        QuantityPerUnit = productReader[nameof(Product.QuantityPerUnit)].ToString(),
+                        UnitPrice = (decimal?)productReader[nameof(Product.UnitPrice)],
+                        UnitsInStock = (byte?)productReader[nameof(Product.UnitsInStock)],
+                        UnitsOnOrder = (byte?)productReader[nameof(Product.UnitsOnOrder)],
+                        ReorderLevel = (byte?)productReader[nameof(Product.ReorderLevel)],
+                        Discontinued = (bool?)productReader[nameof(Product.Discontinued)],
+                    };
+                }
+            }
+            catch (SqlException sqlException)
+            {
+                throw new BusinessException(sqlException.Message, LogSeverity.Fatal);
+            }
+
+            return null;
         }
 
         public async Task UpdateAsync(IEntity entity)
