@@ -17,7 +17,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         private IEntity _entity;
 
         private string TestValidName => "ValidName";
-        private string TestConnectionString => "TestConnectionString";
+        private string TestConnectionString => @"Data Source =.\; Initial Catalog = Northwind; Persist Security Info=True;User ID = sa; Password=Khsph01@gmailcom";
         private int TestInvalidNegativeOne => -1;
         private int TestValidOne => 1;
 
@@ -228,7 +228,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         {
             // Arrange
             _entity = new Product { Id = TestValidOne, Name = TestValidName, Discontinued = TestValidDisconnection };
-            _standardRepository = new StandardRepository(_setUpSpecificationHandler, @"Data Source=.\;Initial Catalog=Northwind;Persist Security Info=True;User ID=sa;Password=Khsph01@gmailcom");
+            _standardRepository = new StandardRepository(_setUpSpecificationHandler, TestConnectionString);
             
             // Act 
             await _standardRepository.CreateAsync(_entity);
