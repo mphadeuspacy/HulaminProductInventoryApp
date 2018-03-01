@@ -8,8 +8,7 @@ namespace Gijima.Hulamin.Core.Validation.Concretes
     {
         public ProductSpecificationHandler(SpecificationHandler specificationHandlerSuccessor) 
             : base(specificationHandlerSuccessor)
-        {
-        }
+        {}
 
         public override void HandleSpecificationRequest(IEntity entity)
         {
@@ -17,20 +16,19 @@ namespace Gijima.Hulamin.Core.Validation.Concretes
 
             if (entity is Product productEntity)
             {
-                if (new EntityIdRequiredValidSpecification<Product>()
+                bool productBusinessRulesValid = 
+                    new EntityIdRequiredValidSpecification<Product>()
                     .And(new EntityNameRequiredSpecification<Product>())
                     .And(new EntityDiscontinuedRequiredSpecification<Product>())
-                     .IsSatisfiedBy(productEntity))
-                {
-                    // TODO: Log this as : ProductSpecificationHandler handles entity
-                    return;
-                }                   
+                    .IsSatisfiedBy(productEntity);
 
+                if (productBusinessRulesValid) return;
+
+                // TODO: Log this as : ProductSpecificationHandler handles entity
                 throw new BusinessException($"{nameof(ProductSpecificationHandler)}.{nameof(HandleSpecificationRequest)}: {nameof(BusinessException)} thrown!");
             }
 
-            if (_specificationHandlerSuccessor != null)
-                _specificationHandlerSuccessor.HandleSpecificationRequest(entity);
+            if (_specificationHandlerSuccessor != null) _specificationHandlerSuccessor.HandleSpecificationRequest(entity);
         }
     }
 }

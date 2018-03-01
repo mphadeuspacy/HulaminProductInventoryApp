@@ -52,6 +52,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
             Assert.ThrowsException<ArgumentException>(() => new StandardRepository(_setUpSpecificationHandler, " "));
         }
 
+        #region Create
         [TestMethod]
         public async Task Create_OnFailure_WhenTheEntityIsNull_ReturnFalse()
         {
@@ -60,7 +61,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
 
             // Act & Assert
             await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
-        }
+        }        
 
         [TestMethod]
         public async Task Create_OnFailure_WhenTheProductIsValidButIdLessThan0_ThenBusinessExceptionThrown()
@@ -127,7 +128,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         {
             // Arrange
             _entity = new Product { Id = 1, Name = null, Discontinued = TestValidDisconnection };
-            
+
             // Act & Assert
             await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
         }
@@ -157,7 +158,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         {
             // Arrange
             _entity = new Product { Id = TestValidOne, Name = string.Empty, Discontinued = TestValidDisconnection };
-            
+
             // Act & Assert
             await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(_entity));
         }
@@ -224,17 +225,41 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         }
 
         [TestMethod]
-        public async Task Create_OnSuccess_WhenTheProductIsValid_ThenDoesNotThrowXnException()
+        public async Task Create_OnFailure_WhenTheProductIsValidButNameAlready_ThenThrowsBusinessException()
+        {
+            // Arrange
+            var entityNew = new Product { Id = 2, Name = "NewToBeDuplicated", Discontinued = TestValidDisconnection };
+            var entityExists = new Product { Id = 3, Name = "NewToBeDuplicated", Discontinued = TestValidDisconnection };
+
+            _standardRepository = new StandardRepository(_setUpSpecificationHandler, TestConnectionString);
+
+            // Act 
+            await _standardRepository.CreateAsync(entityNew);
+
+            // Assert
+            await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.CreateAsync(entityExists));
+        }
+
+        [TestMethod]
+        public async Task Create_OnSuccess_WhenTheProductIsValid_ThenDoesNotThrowAnException()
         {
             // Arrange
             _entity = new Product { Id = TestValidOne, Name = TestValidName, Discontinued = TestValidDisconnection };
             _standardRepository = new StandardRepository(_setUpSpecificationHandler, TestConnectionString);
-            
+
             // Act 
             await _standardRepository.CreateAsync(_entity);
 
             // Assert
-            
+
+        }
+        #endregion
+
+        [TestMethod]
+        public async Task GetByIdAsync_OnFailure_WhenTheProductIsValidButIdLessThan0_ThenBusinessExceptionThrown()
+        {
+            // Act & Assert
+            await Assert.ThrowsExceptionAsync<BusinessException>(() => _standardRepository.GetByIdAsync(TestInvalidNegativeOne));
         }
     }
 }

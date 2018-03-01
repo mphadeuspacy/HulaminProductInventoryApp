@@ -30,14 +30,14 @@ namespace Gijima.Hulamin.Data.Persistence
                 if (entity is Category category)
                 {
                     SqlHelper.ExecuteNonQuery(_connectionString, CommandType.StoredProcedure, "CreateCategory",
-                        new SqlParameter("@CategoryName", category.Name),
+                        new SqlParameter("@Name", category.Name),
                         new SqlParameter("@Description", category.Description),
                         new SqlParameter("@Picture", category.Picture));
                 }
                 else if (entity is Supplier supplier)
                 {
                     SqlHelper.ExecuteNonQuery(_connectionString, CommandType.StoredProcedure, "CreateSupplier",
-                        new SqlParameter("@SupplierName", supplier.Name),
+                        new SqlParameter("@Name", supplier.Name),
                         new SqlParameter("@ContactName", supplier.ContactName),
                         new SqlParameter("@ContactTitle", supplier.ContactTitle),
                         new SqlParameter("@Address", supplier.Address),
@@ -50,9 +50,9 @@ namespace Gijima.Hulamin.Data.Persistence
                         new SqlParameter("@HomePage", supplier.HomePage));
                 }
                 else if (entity is Product product)
-                {
+                {                    
                     SqlHelper.ExecuteNonQuery(_connectionString, CommandType.StoredProcedure, "CreateProduct",
-                        new SqlParameter("@ProductName", product.Name),
+                        new SqlParameter("@Name", product.Name),
                         new SqlParameter("@SupplierId", product.SupplierId),
                         new SqlParameter("@CategoryId", product.CategoryId),
                         new SqlParameter("@QuantityPerUnit", product.QuantityPerUnit),
@@ -85,7 +85,7 @@ namespace Gijima.Hulamin.Data.Persistence
 
         public async Task<int> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            throw new BusinessException();
         }
 
         public async Task UpdateAsync(IEntity entity)
