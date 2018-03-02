@@ -8,9 +8,12 @@
         @UnitsInStock SMALLINT = NULL,
 		@UnitsOnOrder SMALLINT = NULL,
         @ReorderLevel SMALLINT = NULL,
-        @Discontinued BIT
+        @Discontinued BIT,
+        @IdentityId INT OUT
 AS
     INSERT INTO [dbo].[Products]
     SELECT  @Name, @SupplierId, @CategoryId, @QuantityPerUnit, @UnitPrice, @UnitsInStock, @UnitsOnOrder, @ReorderLevel, @Discontinued;
 
-RETURN 0
+    SET @IdentityId = SCOPE_IDENTITY();
+
+RETURN @IdentityId

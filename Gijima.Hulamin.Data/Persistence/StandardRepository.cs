@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Gijima.Hulamin.Core.Entities;
 using System;
-using System.Threading.Tasks;
 using Gijima.Hulamin.Core.Validation.Abstracts;
 using System.Data;
 using System.Data.SqlClient;
@@ -21,7 +20,7 @@ namespace Gijima.Hulamin.Data.Persistence
             _connectionString = string.IsNullOrWhiteSpace(connectionString) == false ? connectionString : throw new ArgumentException();
         }
 
-        public async Task<int> CreateAsync(IEntity entity)
+        public int Create(IEntity entity)
         {
             ValidateEntity(entity);
 
@@ -29,63 +28,71 @@ namespace Gijima.Hulamin.Data.Persistence
             {
                 if (entity is Category category)
                 {
-                    SqlHelper.ExecuteNonQuery(_connectionString, CommandType.StoredProcedure, "CreateCategory",
-                        new SqlParameter("@Name", category.Name),
-                        new SqlParameter("@Description", category.Description),
-                        new SqlParameter("@Picture", category.Picture));
+                    return (int) SqlHelper.ExecuteScalar(_connectionString, CommandType.StoredProcedure, "CreateCategory",
+                        new SqlParameter($"@{nameof(Category.Name)}", category.Name),
+                        new SqlParameter($"@{nameof(Category.Description)}", category.Description),
+                        new SqlParameter($"@{nameof(Category.Picture)}", category.Picture));
                 }
-                else if (entity is Supplier supplier)
+
+                if (entity is Supplier supplier)
                 {
-                    SqlHelper.ExecuteNonQuery(_connectionString, CommandType.StoredProcedure, "CreateSupplier",
-                        new SqlParameter("@Name", supplier.Name),
-                        new SqlParameter("@ContactName", supplier.ContactName),
-                        new SqlParameter("@ContactTitle", supplier.ContactTitle),
-                        new SqlParameter("@Address", supplier.Address),
-                        new SqlParameter("@City", supplier.City),
-                        new SqlParameter("@Region", supplier.Region),
-                        new SqlParameter("@PostalCode", supplier.PostalCode),
-                        new SqlParameter("@Country", supplier.Country),
-                        new SqlParameter("@Phone", supplier.Phone),
-                        new SqlParameter("@Fax", supplier.Fax),
-                        new SqlParameter("@HomePage", supplier.HomePage));
+                    return (int) SqlHelper.ExecuteScalar(_connectionString, CommandType.StoredProcedure, "CreateSupplier",
+                        new SqlParameter($"@{nameof(Supplier.Name)}", supplier.Name),
+                        new SqlParameter($"@{nameof(Supplier.ContactName)}", supplier.ContactName),
+                        new SqlParameter($"@{nameof(Supplier.ContactTitle)}", supplier.ContactTitle),
+                        new SqlParameter($"@{nameof(Supplier.Address)}", supplier.Address),
+                        new SqlParameter($"@{nameof(Supplier.City)}", supplier.City),
+                        new SqlParameter($"@{nameof(Supplier.Region)}", supplier.Region),
+                        new SqlParameter($"@{nameof(Supplier.PostalCode)}", supplier.PostalCode),
+                        new SqlParameter($"@{nameof(Supplier.Country)}", supplier.Country),
+                        new SqlParameter($"@{nameof(Supplier.Phone)}", supplier.Phone),
+                        new SqlParameter($"@{nameof(Supplier.Fax)}", supplier.Fax),
+                        new SqlParameter($"@{nameof(Supplier.HomePage)}", supplier.HomePage));
                 }
-                else if (entity is Product product)
-                {                    
-                    SqlHelper.ExecuteNonQuery(_connectionString, CommandType.StoredProcedure, "CreateProduct",
-                        new SqlParameter("@Name", product.Name),
-                        new SqlParameter("@SupplierId", product.SupplierId),
-                        new SqlParameter("@CategoryId", product.CategoryId),
-                        new SqlParameter("@QuantityPerUnit", product.QuantityPerUnit),
-                        new SqlParameter("@UnitPrice", product.UnitPrice), 
-                        new SqlParameter("@UnitsInStock", product.UnitsInStock),                        
-                        new SqlParameter("@UnitsOnOrder", product.UnitsOnOrder),
-                        new SqlParameter("@ReorderLevel", product.ReorderLevel),
-                        new SqlParameter("@Discontinued", product.Discontinued));
+
+                if (entity is Product product)
+                {
+                    var tempStore = SqlHelper.ExecuteScalar(_connectionString, CommandType.StoredProcedure, "CreateProduct",
+                        new SqlParameter($"@{nameof(Product.Name)}", product.Name),
+                        new SqlParameter($"@{nameof(Product.SupplierId)}", product.SupplierId),
+                        new SqlParameter($"@{nameof(Product.CategoryId)}", product.CategoryId),
+                        new SqlParameter($"@{nameof(Product.QuantityPerUnit)}", product.QuantityPerUnit),
+                        new SqlParameter($"@{nameof(Product.UnitPrice)}", product.UnitPrice),
+                        new SqlParameter($"@{nameof(Product.UnitsInStock)}", product.UnitsInStock),
+                        new SqlParameter($"@{nameof(Product.UnitsOnOrder)}", product.UnitsOnOrder),
+                        new SqlParameter($"@{nameof(Product.ReorderLevel)}", product.ReorderLevel),
+                        new SqlParameter($"@{nameof(Product.Discontinued)}", product.Discontinued),
+                        new SqlParameter("@IdentityId", ParameterDirection.Output));
+
+                    return (int) tempStore;
                 }
 
             }
             catch (BusinessException sqlException)
             {
-                throw new BusinessException(sqlException.Message, LogSeverity.Error);
+                //Log
+                return default;
             }
             catch (SqlException sqlException)
             {
-                throw new BusinessException(sqlException.Message, LogSeverity.Fatal);
+                //Log
+                return default;
             }
             catch (Exception exception)
             {
-                throw new BusinessException(exception.Message, LogSeverity.Fatal);
+                //Log
+                return default;
             }
 
-            return null;
+            return default;
         }
 
-        public async Task<List<IEntity>> GetAllAsync()
+        public List<IEntity> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IEntity> GetByIdAsync(int id)
+        public IEntity GetById(int id)
         {
             if(id <= 0) return null;
 
@@ -118,7 +125,7 @@ namespace Gijima.Hulamin.Data.Persistence
             return null;
         }
 
-        public async Task UpdateAsync(IEntity entity)
+        public int Update(IEntity entity)
         {
             throw new NotImplementedException();
         }

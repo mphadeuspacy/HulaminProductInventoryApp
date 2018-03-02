@@ -1,17 +1,16 @@
 ﻿using Gijima.Hulamin.Core.Entities;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Gijima.Hulamin.Data.Persistence
 {
     public interface IRepository
     {
-        Task<int> CreateAsync(IEntity entity);
+        int Create(IEntity entity);
 
-        Task<List<IEntity>> GetAllAsync();
+        List<IEntity> GetAll();
 
-        Task<IEntity> GetByIdAsync(int id);
+        IEntity GetById(int id);
 
-        Task UpdateAsync(IEntity entity);
+        int Update(IEntity entity);
     }
 }
