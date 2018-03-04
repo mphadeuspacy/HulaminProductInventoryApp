@@ -6,10 +6,10 @@
         @Address NVARCHAR(60) = NULL,
         @City NVARCHAR(15) = NULL,
         @Region NVARCHAR(15) = NULL,
-        @PostalCode NVARCHAR(10),
+        @PostalCode NVARCHAR(10) = NULL,
         @Country NVARCHAR(15) = NULL,
         @Phone NVARCHAR(24) = NULL,
-        @Fax NVARCHAR(24),
+        @Fax NVARCHAR(24) = NULL,
         @HomePage NTEXT = NUll
 AS
 BEGIN 

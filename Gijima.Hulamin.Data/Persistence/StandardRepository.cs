@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using Gijima.Hulamin.Core.Exceptions;
 using Microsoft.ApplicationBlocks.Data;
+using System.Text;
 
 namespace Gijima.Hulamin.Data.Persistence
 {
@@ -28,15 +29,21 @@ namespace Gijima.Hulamin.Data.Persistence
             {
                 if (entity is Category category)
                 {
-                    return (int) SqlHelper.ExecuteScalar(_connectionString, CommandType.StoredProcedure, "CreateCategory",
+                    if (GetById<Category>(category.Id) != null) throw new BusinessException($"'{nameof(Category)}' {nameof(category.Name)} already exists!");
+
+                    var insertedRowId = SqlHelper.ExecuteScalar(_connectionString, CommandType.StoredProcedure, "CreateCategory",
                         new SqlParameter($"@{nameof(Category.Name)}", category.Name),
                         new SqlParameter($"@{nameof(Category.Description)}", category.Description),
                         new SqlParameter($"@{nameof(Category.Picture)}", category.Picture));
+
+                    return int.Parse(insertedRowId.ToString());
                 }
 
                 if (entity is Supplier supplier)
                 {
-                    return (int) SqlHelper.ExecuteScalar(_connectionString, CommandType.StoredProcedure, "CreateSupplier",
+                    if (GetById<Supplier>(supplier.Id) != null) throw new BusinessException($"'{nameof(Supplier)}' {nameof(supplier.Name)} already exists!");
+
+                    var insertedRowId = SqlHelper.ExecuteScalar(_connectionString, CommandType.StoredProcedure, "CreateSupplier",
                         new SqlParameter($"@{nameof(Supplier.Name)}", supplier.Name),
                         new SqlParameter($"@{nameof(Supplier.ContactName)}", supplier.ContactName),
                         new SqlParameter($"@{nameof(Supplier.ContactTitle)}", supplier.ContactTitle),
@@ -48,10 +55,14 @@ namespace Gijima.Hulamin.Data.Persistence
                         new SqlParameter($"@{nameof(Supplier.Phone)}", supplier.Phone),
                         new SqlParameter($"@{nameof(Supplier.Fax)}", supplier.Fax),
                         new SqlParameter($"@{nameof(Supplier.HomePage)}", supplier.HomePage));
+
+                    return int.Parse(insertedRowId.ToString());
                 }
 
                 if (entity is Product product)
                 {
+                    if (GetById<Product>(product.Id) != null) throw new BusinessException($"'{nameof(Product)}' {nameof(product.Name)} already exists!");
+
                     var insertedRowId = SqlHelper.ExecuteScalar(_connectionString, CommandType.StoredProcedure, "CreateProduct",
                         new SqlParameter($"@{nameof(Product.Name)}", product.Name),
                         new SqlParameter($"@{nameof(Product.SupplierId)}", product.SupplierId),
@@ -65,7 +76,6 @@ namespace Gijima.Hulamin.Data.Persistence
 
                     return int.Parse(insertedRowId.ToString());
                 }
-
             }
             catch (BusinessException sqlException)
             {
@@ -97,29 +107,69 @@ namespace Gijima.Hulamin.Data.Persistence
 
             try
             {
-                IDataReader productReader;
+                IDataReader reader;
 
                 if (typeof(TEntity) == typeof(Product))
                 {
-                    productReader = SqlHelper.ExecuteReader(_connectionString, CommandType.StoredProcedure, "GetProductById", new SqlParameter("@Id", id));
+                    reader = SqlHelper.ExecuteReader(_connectionString, CommandType.StoredProcedure, "GetProductById", new SqlParameter("@Id", id));
 
-                    if (productReader.Read())
+                    if (reader.Read())
                     {
                         return new Product
                         {
-                            Id = (int)productReader["ProductID"],
-                            Name = productReader["ProductName"].ToString(),
-                            SupplierId = string.IsNullOrWhiteSpace(productReader["SupplierID"].ToString()) ? 0 : int.Parse(productReader["SupplierID"].ToString()),
-                            CategoryId = string.IsNullOrWhiteSpace(productReader["CategoryID"].ToString()) ? 0 : int.Parse(productReader["CategoryID"].ToString()),
-                            QuantityPerUnit = productReader["QuantityPerUnit"].ToString(),
-                            UnitPrice = string.IsNullOrWhiteSpace(productReader["UnitPrice"].ToString()) ? 0 : decimal.Parse(productReader["UnitPrice"].ToString()),
-                            UnitsInStock = string.IsNullOrWhiteSpace(productReader["UnitsInStock"].ToString()) ? (short)0 : short.Parse(productReader["UnitsInStock"].ToString()),
-                            UnitsOnOrder = string.IsNullOrWhiteSpace(productReader["UnitsOnOrder"].ToString()) ? (short)0 : short.Parse(productReader["UnitsOnOrder"].ToString()),
-                            ReorderLevel = string.IsNullOrWhiteSpace(productReader["ReorderLevel"].ToString()) ? (short)0 : short.Parse(productReader["ReorderLevel"].ToString()),
-                            Discontinued = string.IsNullOrWhiteSpace(productReader["Discontinued"].ToString()) ? null : (bool?)bool.Parse(productReader["Discontinued"].ToString())
+                            Id = (int)reader["ProductID"],
+                            Name = reader["ProductName"].ToString(),
+                            SupplierId = string.IsNullOrWhiteSpace(reader["SupplierID"].ToString()) ? 0 : int.Parse(reader["SupplierID"].ToString()),
+                            CategoryId = string.IsNullOrWhiteSpace(reader["CategoryID"].ToString()) ? 0 : int.Parse(reader["CategoryID"].ToString()),
+                            QuantityPerUnit = reader["QuantityPerUnit"].ToString(),
+                            UnitPrice = string.IsNullOrWhiteSpace(reader["UnitPrice"].ToString()) ? 0 : decimal.Parse(reader["UnitPrice"].ToString()),
+                            UnitsInStock = string.IsNullOrWhiteSpace(reader["UnitsInStock"].ToString()) ? (short)0 : short.Parse(reader["UnitsInStock"].ToString()),
+                            UnitsOnOrder = string.IsNullOrWhiteSpace(reader["UnitsOnOrder"].ToString()) ? (short)0 : short.Parse(reader["UnitsOnOrder"].ToString()),
+                            ReorderLevel = string.IsNullOrWhiteSpace(reader["ReorderLevel"].ToString()) ? (short)0 : short.Parse(reader["ReorderLevel"].ToString()),
+                            Discontinued = string.IsNullOrWhiteSpace(reader["Discontinued"].ToString()) ? null : (bool?)bool.Parse(reader["Discontinued"].ToString())
                         };
                     }
-                }                
+                }
+
+                if (typeof(TEntity) == typeof(Supplier))
+                {
+                    reader = SqlHelper.ExecuteReader(_connectionString, CommandType.StoredProcedure, "GetSupplierById", new SqlParameter("@Id", id));
+
+                    if (reader.Read())
+                    {
+                        return new Supplier
+                        {
+                            Id = (int)reader["SupplierID"],
+                            Name = reader["CompanyName"].ToString(),
+                            ContactName = reader["ContactName"].ToString(),
+                            ContactTitle = reader["ContactTitle"].ToString(),
+                            Address = reader["Address"].ToString(),
+                            City = reader["City"].ToString(),
+                            Region = reader["Region"].ToString(),
+                            PostalCode = reader["PostalCode"].ToString(),
+                            Country = reader["Country"].ToString(),
+                            Phone = reader["Phone"].ToString(),
+                            Fax =reader["Fax"].ToString(),
+                            HomePage = reader["HomePage"].ToString()
+                        };
+                    }
+                }
+
+                if (typeof(TEntity) == typeof(Category))
+                {
+                    reader = SqlHelper.ExecuteReader(_connectionString, CommandType.StoredProcedure, "GetCategoryById", new SqlParameter("@Id", id));
+
+                    if (reader.Read())
+                    {
+                        return new Category
+                        {
+                            Id = (int)reader["CategoryID"],
+                            Name = reader["CategoryName"].ToString(),
+                            Description = reader["Description"].ToString(),
+                            Picture = Encoding.ASCII.GetBytes(reader["Picture"].ToString())
+                        };
+                    }
+                }
             }
             catch (SqlException sqlException)
             {

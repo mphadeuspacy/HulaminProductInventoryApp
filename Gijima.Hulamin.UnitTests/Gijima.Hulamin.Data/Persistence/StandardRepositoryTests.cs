@@ -228,22 +228,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
             Assert.ThrowsException<BusinessException>(() => _standardCategoryRepository.Create(_entity));
         }
 
-        [TestMethod]
-        public  void Create_OnFailure_WhenTheProductIsValidButNameAlready_ThenThrowsBusinessException()
-        {
-            // Arrange
-            var entityNew = new Product { Id = 2, Name = "NewToBeDuplicated", Discontinued = TestValidDisconnection };
-            var entityExists = new Product { Id = 3, Name = "NewToBeDuplicated", Discontinued = TestValidDisconnection };
-
-            _standardProductRepository = new StandardRepository<Product>(_setUpSpecificationHandler, TestConnectionString);
-
-            // Act 
-            _standardProductRepository.Create(entityNew);
-
-            // Assert
-            Assert.ThrowsException<BusinessException>(() => _standardProductRepository.Create(entityExists));
-        }
-
+       
         [TestMethod]
         public  void Create_OnSuccess_WhenTheProductIsValid_ThenDoesNotThrowAnException()
         {
@@ -273,18 +258,31 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
             Assert.AreEqual(expectedResult, actualResult);
         }
 
-        //[TestMethod]
-        //public void GetById_OnFailure_WhenTheSupplierIsValidButIdLessThan0_ThenReturnNull()
-        //{
-        //    // Arrange
-        //    IEntity expectedResult = null;
+        [TestMethod]
+        public void GetById_OnFailure_WhenTheSupplierIsValidButIdLessThan0_ThenReturnNull()
+        {
+            // Arrange
+            IEntity expectedResult = null;
 
-        //    // Act 
-        //    IEntity actualResult = _standardRepository.GetById(TestInvalidNegativeOne);
+            // Act 
+            IEntity actualResult = _standardSupplierRepository.GetById<Supplier>(TestInvalidNegativeOne);
 
-        //    // Assert
-        //    Assert.AreEqual(expectedResult, actualResult);
-        //}
+            // Assert
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+        [TestMethod]
+        public void GetById_OnFailure_WhenTheCategoryIsValidButIdLessThan0_ThenReturnNull()
+        {
+            // Arrange
+            IEntity expectedResult = null;
+
+            // Act 
+            IEntity actualResult = _standardCategoryRepository.GetById<Category>(TestInvalidNegativeOne);
+
+            // Assert
+            Assert.AreEqual(expectedResult, actualResult);
+        }
 
         [TestMethod]
         public void GetById_OnFailure_WhenTheProductIsValidButIdIs0_ThenReturnNull()
@@ -293,6 +291,30 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
 
             // Act 
             IEntity actualResult = _standardProductRepository.GetById<Product>(0);
+
+            // Assert
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+        [TestMethod]
+        public void GetById_OnFailure_WhenTheSupplierIsValidButIdIs0_ThenReturnNull()
+        {
+            IEntity expectedResult = null;
+
+            // Act 
+            IEntity actualResult = _standardSupplierRepository.GetById<Supplier>(0);
+
+            // Assert
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+        [TestMethod]
+        public void GetById_OnFailure_WhenTheCategoryIsValidButIdIs0_ThenReturnNull()
+        {
+            IEntity expectedResult = null;
+
+            // Act 
+            IEntity actualResult = _standardCategoryRepository.GetById<Category>(0);
 
             // Assert
             Assert.AreEqual(expectedResult, actualResult);
@@ -312,19 +334,74 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         }
 
         [TestMethod]
+        public void GetById_OnFailure_WhenTheSupplierDoesNotExistInTheDataStore_ThenReturnNull()
+        {
+            // Arrange
+            IEntity expectedResult = null;
+
+            // Act 
+            IEntity actualResult = _standardSupplierRepository.GetById<Supplier>(-999);
+
+            // Assert
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+        [TestMethod]
+        public void GetById_OnFailure_WhenTheCatgoryDoesNotExistInTheDataStore_ThenReturnNull()
+        {
+            // Arrange
+            IEntity expectedResult = null;
+
+            // Act 
+            IEntity actualResult = _standardCategoryRepository.GetById<Category>(-999);
+
+            // Assert
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+        [TestMethod]
         public void GetById_OnSuccess_WhenTheProductExistsInTheDataStore_ThenReturnProductInstance()
         {
             // Arrange
             _entity = new Product { Id = TestValidOne, Name = TestValidName, Discontinued = TestValidDisconnection };
-            int expectedResultId = _standardProductRepository.Create(_entity);
+            
+            // Act 
+            IEntity actualResult = _standardProductRepository.GetById<Product>(_entity.Id);
+
+            // Assert
+            Assert.AreEqual(_entity.Id, actualResult.Id);
+            Assert.AreEqual(_entity.Name, actualResult.Name);
+        }
+
+        [TestMethod]
+        public void GetById_OnSuccess_WhenTheSupplierExistsInTheDataStore_ThenReturnSupplierInstance()
+        {
+            // Arrange
+            _entity = new Supplier { Id = TestValidOne, Name = TestValidName };
+            int expectedResultId = _standardSupplierRepository.Create(_entity);
 
             // Act 
-            IEntity actualResult = _standardProductRepository.GetById<Product>(expectedResultId);
+            IEntity actualResult = _standardSupplierRepository.GetById<Supplier>(expectedResultId);
 
             // Assert
             Assert.AreEqual(expectedResultId, actualResult.Id);
             Assert.AreEqual(_entity.Name, actualResult.Name);
-        } 
+        }
+
+        [TestMethod]
+        public void GetById_OnSuccess_WhenTheCategoryExistsInTheDataStore_ThenReturnCategoryInstance()
+        {
+            // Arrange
+            _entity = new Category { Id = TestValidOne, Name = TestValidName, Picture = new byte[] { 1 } };
+            int expectedResultId = _standardCategoryRepository.Create(_entity);
+
+            // Act 
+            IEntity actualResult = _standardCategoryRepository.GetById<Category>(expectedResultId);
+
+            // Assert
+            Assert.AreEqual(expectedResultId, actualResult.Id);
+            Assert.AreEqual(_entity.Name, actualResult.Name);
+        }
         #endregion
 
         [TestCleanup]
@@ -333,6 +410,8 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
             _entity = null;
             _setUpSpecificationHandler = null;
             _standardProductRepository = null;
+            _standardCategoryRepository = null;
+            _standardSupplierRepository = null;
         }
     }
 }
