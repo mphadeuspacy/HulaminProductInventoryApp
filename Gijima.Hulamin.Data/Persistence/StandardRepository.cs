@@ -98,12 +98,105 @@ namespace Gijima.Hulamin.Data.Persistence
 
         public List<IEntity> GetAll<TEntity>()
         {
-            return new List<IEntity>();
+            var entityList = new List<IEntity>();
+
+            try
+            {
+                IDataReader reader;                
+
+                if (typeof(TEntity) == typeof(Product))
+                {
+                    reader = SqlHelper.ExecuteReader(_connectionString, CommandType.StoredProcedure, "GetAllProducts");
+
+                    while (reader.Read())
+                    {
+                        entityList.Add
+                        (
+                            new Product
+                            {
+                                Id = (int)reader["ProductID"],
+                                Name = reader["ProductName"].ToString(),
+                                SupplierId = string.IsNullOrWhiteSpace(reader["SupplierID"].ToString()) ? 0 : int.Parse(reader["SupplierID"].ToString()),
+                                CategoryId = string.IsNullOrWhiteSpace(reader["CategoryID"].ToString()) ? 0 : int.Parse(reader["CategoryID"].ToString()),
+                                QuantityPerUnit = reader["QuantityPerUnit"].ToString(),
+                                UnitPrice = string.IsNullOrWhiteSpace(reader["UnitPrice"].ToString()) ? 0 : decimal.Parse(reader["UnitPrice"].ToString()),
+                                UnitsInStock = string.IsNullOrWhiteSpace(reader["UnitsInStock"].ToString()) ? (short)0 : short.Parse(reader["UnitsInStock"].ToString()),
+                                UnitsOnOrder = string.IsNullOrWhiteSpace(reader["UnitsOnOrder"].ToString()) ? (short)0 : short.Parse(reader["UnitsOnOrder"].ToString()),
+                                ReorderLevel = string.IsNullOrWhiteSpace(reader["ReorderLevel"].ToString()) ? (short)0 : short.Parse(reader["ReorderLevel"].ToString()),
+                                Discontinued = string.IsNullOrWhiteSpace(reader["Discontinued"].ToString()) ? null : (bool?)bool.Parse(reader["Discontinued"].ToString())
+                            }
+                        );
+                    }
+                }
+
+                if (typeof(TEntity) == typeof(Supplier))
+                {
+                    reader = SqlHelper.ExecuteReader(_connectionString, CommandType.StoredProcedure, "GetAllSuppliers");
+
+                    while (reader.Read())
+                    {
+                        entityList.Add
+                        (
+                            new Supplier
+                            {
+                                Id = (int)reader["SupplierID"],
+                                Name = reader["CompanyName"].ToString(),
+                                ContactName = reader["ContactName"].ToString(),
+                                ContactTitle = reader["ContactTitle"].ToString(),
+                                Address = reader["Address"].ToString(),
+                                City = reader["City"].ToString(),
+                                Region = reader["Region"].ToString(),
+                                PostalCode = reader["PostalCode"].ToString(),
+                                Country = reader["Country"].ToString(),
+                                Phone = reader["Phone"].ToString(),
+                                Fax = reader["Fax"].ToString(),
+                                HomePage = reader["HomePage"].ToString()
+                            }
+                        );
+                    }
+                }
+
+                if (typeof(TEntity) == typeof(Category))
+                {
+                    reader = SqlHelper.ExecuteReader(_connectionString, CommandType.StoredProcedure, "GetAllCategories");
+
+                    while (reader.Read())
+                    {
+                        entityList.Add
+                        (
+                            new Category
+                            {
+                                Id = (int)reader["CategoryID"],
+                                Name = reader["CategoryName"].ToString(),
+                                Description = reader["Description"].ToString(),
+                                Picture = Encoding.ASCII.GetBytes(reader["Picture"].ToString())
+                            }
+                        );
+                    }
+                }
+            }
+            catch (BusinessException businessException)
+            {
+                //Log
+                return default;
+            }
+            catch (SqlException sqlException)
+            {
+                //Log
+                return default;
+            }
+            catch (Exception exception)
+            {
+                //Log
+                return default;
+            }
+
+            return entityList;
         }
 
         public IEntity GetById<TEntity>(int id)
         {
-            if(id <= 0) return null;
+            if(id <= 0) throw new BusinessException();
 
             try
             {
@@ -236,6 +329,52 @@ namespace Gijima.Hulamin.Data.Persistence
                         new SqlParameter($"@{nameof(Category.Id)}", category.Id));
 
                     return int.Parse(updatedRowId.ToString());
+                }
+            }
+            catch (BusinessException businessException)
+            {
+                //Log
+                return default;
+            }
+            catch (SqlException sqlException)
+            {
+                //Log
+                return default;
+            }
+            catch (Exception exception)
+            {
+                //Log
+                return default;
+            }
+
+            return default;
+        }
+
+        public int Delete<TEntity>(int id)
+        {
+            if(id <= 0) throw new BusinessException();
+
+            try
+            {
+                if ((typeof(TEntity) == typeof(Category)))
+                {
+                    var insertedRowId = SqlHelper.ExecuteScalar(_connectionString, CommandType.StoredProcedure, "DeleteCategory", new SqlParameter($"@{nameof(Category.Id)}", id));
+
+                    return int.Parse(insertedRowId.ToString());
+                }
+
+                if ((typeof(TEntity) == typeof(Supplier)))
+                {
+                    var insertedRowId = SqlHelper.ExecuteScalar(_connectionString, CommandType.StoredProcedure, "DeleteSupplier", new SqlParameter($"@{nameof(Supplier.Id)}", id));
+
+                    return int.Parse(insertedRowId.ToString());
+                }
+
+                if ((typeof(TEntity) == typeof(Product)))
+                {
+                    var insertedRowId = SqlHelper.ExecuteScalar(_connectionString, CommandType.StoredProcedure, "DeleteProduct", new SqlParameter($"@{nameof(Product.Id)}", id));
+
+                    return int.Parse(insertedRowId.ToString());
                 }
             }
             catch (BusinessException sqlException)

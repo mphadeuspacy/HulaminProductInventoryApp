@@ -12,5 +12,7 @@ namespace Gijima.Hulamin.Data.Persistence
         IEntity GetById<TEntity>(int id);
 
         int Update(IEntity entity);
+
+        int Delete<TEntity>(int id);
     }
 }
