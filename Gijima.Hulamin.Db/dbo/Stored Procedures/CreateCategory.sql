@@ -4,7 +4,12 @@
         @Description NTEXT = NULL,
         @Picture IMAGE = NULL
 AS
+BEGIN 
+	SET NOCOUNT ON;
+
     INSERT INTO [dbo].[Categories]
     SELECT  @Name, @Description, @Picture;
 
-RETURN 0
+	SELECT SCOPE_IDENTITY();
+END
+																								

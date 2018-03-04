@@ -12,7 +12,11 @@
         @Fax NVARCHAR(24),
         @HomePage NTEXT = NUll
 AS
+BEGIN 
+	SET NOCOUNT ON;
+
     INSERT INTO [dbo].[Suppliers]
     SELECT  @Name, @ContactName, @ContactTitle, @Address, @City, @Region, @PostalCode, @Country, @Phone, @Fax, @HomePage;
 
-RETURN 0
+	SELECT SCOPE_IDENTITY();
+END

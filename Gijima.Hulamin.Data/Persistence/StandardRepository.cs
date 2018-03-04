@@ -9,7 +9,7 @@ using Microsoft.ApplicationBlocks.Data;
 
 namespace Gijima.Hulamin.Data.Persistence
 {
-    public class StandardRepository : IRepository
+    public class StandardRepository<TEntity> : IRepository<TEntity>
     {
         private SpecificationHandler SpecificationHandler { get; }
         private readonly string _connectionString;
@@ -52,7 +52,7 @@ namespace Gijima.Hulamin.Data.Persistence
 
                 if (entity is Product product)
                 {
-                    var tempStore = SqlHelper.ExecuteScalar(_connectionString, CommandType.StoredProcedure, "CreateProduct",
+                    var insertedRowId = SqlHelper.ExecuteScalar(_connectionString, CommandType.StoredProcedure, "CreateProduct",
                         new SqlParameter($"@{nameof(Product.Name)}", product.Name),
                         new SqlParameter($"@{nameof(Product.SupplierId)}", product.SupplierId),
                         new SqlParameter($"@{nameof(Product.CategoryId)}", product.CategoryId),
@@ -61,10 +61,9 @@ namespace Gijima.Hulamin.Data.Persistence
                         new SqlParameter($"@{nameof(Product.UnitsInStock)}", product.UnitsInStock),
                         new SqlParameter($"@{nameof(Product.UnitsOnOrder)}", product.UnitsOnOrder),
                         new SqlParameter($"@{nameof(Product.ReorderLevel)}", product.ReorderLevel),
-                        new SqlParameter($"@{nameof(Product.Discontinued)}", product.Discontinued),
-                        new SqlParameter("@IdentityId", ParameterDirection.Output));
+                        new SqlParameter($"@{nameof(Product.Discontinued)}", product.Discontinued));
 
-                    return (int) tempStore;
+                    return int.Parse(insertedRowId.ToString());
                 }
 
             }
@@ -92,30 +91,35 @@ namespace Gijima.Hulamin.Data.Persistence
             throw new NotImplementedException();
         }
 
-        public IEntity GetById(int id)
+        public IEntity GetById<TEntity>(int id)
         {
             if(id <= 0) return null;
 
             try
             {
-                IDataReader productReader = SqlHelper.ExecuteReader(_connectionString, CommandType.StoredProcedure, "GetProductById", new SqlParameter("@Id", id));
+                IDataReader productReader;
 
-                if (productReader.Read())
+                if (typeof(TEntity) == typeof(Product))
                 {
-                    return new Product
+                    productReader = SqlHelper.ExecuteReader(_connectionString, CommandType.StoredProcedure, "GetProductById", new SqlParameter("@Id", id));
+
+                    if (productReader.Read())
                     {
-                        Id = (int)productReader[nameof(Product.Id)],
-                        Name = productReader[nameof(Product.Name)].ToString(),
-                        SupplierId = (int)productReader[nameof(Product.SupplierId)],
-                        CategoryId = (int)productReader[nameof(Product.CategoryId)],
-                        QuantityPerUnit = productReader[nameof(Product.QuantityPerUnit)].ToString(),
-                        UnitPrice = (decimal?)productReader[nameof(Product.UnitPrice)],
-                        UnitsInStock = (byte?)productReader[nameof(Product.UnitsInStock)],
-                        UnitsOnOrder = (byte?)productReader[nameof(Product.UnitsOnOrder)],
-                        ReorderLevel = (byte?)productReader[nameof(Product.ReorderLevel)],
-                        Discontinued = (bool?)productReader[nameof(Product.Discontinued)],
-                    };
-                }
+                        return new Product
+                        {
+                            Id = (int)productReader["ProductID"],
+                            Name = productReader["ProductName"].ToString(),
+                            SupplierId = string.IsNullOrWhiteSpace(productReader["SupplierID"].ToString()) ? 0 : int.Parse(productReader["SupplierID"].ToString()),
+                            CategoryId = string.IsNullOrWhiteSpace(productReader["CategoryID"].ToString()) ? 0 : int.Parse(productReader["CategoryID"].ToString()),
+                            QuantityPerUnit = productReader["QuantityPerUnit"].ToString(),
+                            UnitPrice = string.IsNullOrWhiteSpace(productReader["UnitPrice"].ToString()) ? 0 : decimal.Parse(productReader["UnitPrice"].ToString()),
+                            UnitsInStock = string.IsNullOrWhiteSpace(productReader["UnitsInStock"].ToString()) ? (short)0 : short.Parse(productReader["UnitsInStock"].ToString()),
+                            UnitsOnOrder = string.IsNullOrWhiteSpace(productReader["UnitsOnOrder"].ToString()) ? (short)0 : short.Parse(productReader["UnitsOnOrder"].ToString()),
+                            ReorderLevel = string.IsNullOrWhiteSpace(productReader["ReorderLevel"].ToString()) ? (short)0 : short.Parse(productReader["ReorderLevel"].ToString()),
+                            Discontinued = string.IsNullOrWhiteSpace(productReader["Discontinued"].ToString()) ? null : (bool?)bool.Parse(productReader["Discontinued"].ToString())
+                        };
+                    }
+                }                
             }
             catch (SqlException sqlException)
             {

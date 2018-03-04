@@ -1,4 +1,6 @@
-﻿namespace Gijima.Hulamin.Core.Entities
+﻿using System;
+
+namespace Gijima.Hulamin.Core.Entities
 {
     public class Product : IEntity
     {
@@ -8,9 +10,9 @@
         public int? CategoryId { get; set; }
         public string QuantityPerUnit { get; set; }
         public decimal? UnitPrice { get; set; }
-        public byte? UnitsInStock { get; set; }
-        public byte? UnitsOnOrder { get; set; }
-        public byte? ReorderLevel { get; set; }
+        public short? UnitsInStock { get; set; }
+        public short? UnitsOnOrder { get; set; }
+        public short? ReorderLevel { get; set; }
         public bool? Discontinued { get; set; }
     }
 }
