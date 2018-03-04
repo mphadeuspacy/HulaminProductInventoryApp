@@ -206,8 +206,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
             // Act & Assert
             Assert.ThrowsException<BusinessException>(() => _standardProductRepository.Create(_entity));
         }
-
-
+        
         [TestMethod]
         public  void Create_OnFailure_WhenTheSupplierIsNotNullButNameIsWhiteSpace_ReturnBusinessExceptionThrown()
         {
@@ -227,7 +226,6 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
             // Act & Assert
             Assert.ThrowsException<BusinessException>(() => _standardCategoryRepository.Create(_entity));
         }
-
        
         [TestMethod]
         public  void Create_OnSuccess_WhenTheProductIsValid_ThenDoesNotThrowAnException()
@@ -240,9 +238,120 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
             _standardProductRepository.Create(_entity);
 
             // Assert
-
         }
         #endregion
+
+        [TestMethod]
+        public void Update_OnFailure_WhenTheEntityIsNull_ReturnFalse()
+        {
+            // Arrange
+            _entity = null;
+
+            // Act & Assert
+            Assert.ThrowsException<BusinessException>(() => _standardProductRepository.Update(_entity));
+        }
+
+        [TestMethod]
+        public void Update_OnFailure_WhenTheProductIsValidButIdLessThan0_ThenBusinessExceptionThrown()
+        {
+            // Arrange
+            _entity = new Product { Id = TestInvalidNegativeOne, Name = TestValidName, Discontinued = TestValidDisconnection };
+
+            // Act & Assert
+            Assert.ThrowsException<BusinessException>(() => _standardProductRepository.Update(_entity));
+        }
+
+        [TestMethod]
+        public void Update_OnFailure_WhenTheProductIsValidButIdIs0_ThenBusinessExceptionThrown()
+        {
+            // Arrange
+            _entity = new Product { Id = 0, Name = TestValidName, Discontinued = TestValidDisconnection };
+
+            // Act & Assert
+            Assert.ThrowsException<BusinessException>(() => _standardProductRepository.Update(_entity));
+        }
+
+        [TestMethod]
+        public void Update_OnFailure_WhenTheProductIsValidButNameIsNull_ThenBusinessExceptionThrown()
+        {
+            // Arrange
+            _entity = new Product { Id = 1, Name = null, Discontinued = TestValidDisconnection };
+
+            // Act & Assert
+            Assert.ThrowsException<BusinessException>(() => _standardProductRepository.Update(_entity));
+        }
+
+        [TestMethod]
+        public void Update_OnFailure_WhenTheProductIsValidButNameIsEmpty_ThenBusinessExceptionThrown()
+        {
+            // Arrange
+            _entity = new Product { Id = TestValidOne, Name = string.Empty, Discontinued = TestValidDisconnection };
+
+            // Act & Assert
+            Assert.ThrowsException<BusinessException>(() => _standardProductRepository.Update(_entity));
+        }
+
+        [TestMethod]
+        public void Update_OnFailure_WhenTheProductIsVallidButNameIsWhiteSpace_ReturnBusinessExceptionThrown()
+        {
+            // Arrange
+            _entity = new Product { Id = TestValidOne, Name = "  ", Discontinued = TestValidDisconnection };
+
+            // Act & Assert
+            Assert.ThrowsException<BusinessException>(() => _standardProductRepository.Update(_entity));
+        }
+
+        [TestMethod]
+        public void Update_OnFailure_WhenTheProductAndNameAreValidButDisconnectionIsNull_ReturnBusinessExceptionThrown()
+        {
+            // Arrange
+            _entity = new Product { Id = TestValidOne, Name = TestValidName, Discontinued = null };
+
+            // Act & Assert
+            Assert.ThrowsException<BusinessException>(() => _standardProductRepository.Update(_entity));
+        }
+
+        [TestMethod]
+        public void Update_OnSuccess_WhenTheProductIsValid_ThenDoesNotThrowAnException()
+        {
+            // Arrange
+            _entity = new Product { Id = TestValidOne, Name = TestValidName, Discontinued = TestValidDisconnection };
+            _standardProductRepository = new StandardRepository<Product>(_setUpSpecificationHandler, TestConnectionString);
+
+            // Act 
+            int expectedResult = _standardProductRepository.Update(_entity);
+
+            // Assert
+            Assert.AreEqual(_entity.Id, expectedResult);
+        }
+
+        [TestMethod]
+        public void Update_OnSuccess_WhenTheSupplierIsValid_ThenDoesNotThrowAnException()
+        {
+            // Arrange
+            _entity = new Supplier { Id = TestValidOne, Name = TestValidName };
+            _standardSupplierRepository = new StandardRepository<Supplier>(_setUpSpecificationHandler, TestConnectionString);
+
+            // Act 
+            int expectedResult = _standardSupplierRepository.Update(_entity);
+
+            // Assert
+            Assert.AreEqual(_entity.Id, expectedResult);
+        }
+
+        [TestMethod]
+        public void Update_OnSuccess_WhenTheCategoryIsValid_ThenDoesNotThrowAnException()
+        {
+            // Arrange
+            _entity = new Category { Id = TestValidOne, Name = TestValidName, Picture = new byte[] { 1 } };
+            _standardCategoryRepository = new StandardRepository<Category>(_setUpSpecificationHandler, TestConnectionString);
+
+            // Act 
+            int expectedResult = _standardCategoryRepository.Update(_entity);
+
+            // Assert
+            Assert.AreEqual(_entity.Id, expectedResult);
+        }
 
         #region GetById
         [TestMethod]

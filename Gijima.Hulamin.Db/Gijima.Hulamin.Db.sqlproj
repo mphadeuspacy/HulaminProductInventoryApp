@@ -107,5 +107,8 @@
     <Build Include="dbo\Stored Procedures\GetProductById.sql" />
     <Build Include="dbo\Stored Procedures\GetSupplierById.sql" />
     <Build Include="dbo\Stored Procedures\GetCategoryById.sql" />
+    <Build Include="dbo\Stored Procedures\UpdateProduct.sql" />
+    <Build Include="dbo\Stored Procedures\UpdateCategory.sql" />
+    <Build Include="UpdateSupplier.sql" />
   </ItemGroup>
 </Project>

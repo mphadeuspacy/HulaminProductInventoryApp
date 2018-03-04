@@ -181,7 +181,80 @@ namespace Gijima.Hulamin.Data.Persistence
 
         public int Update(IEntity entity)
         {
-            throw new NotImplementedException();
+            ValidateEntity(entity);
+
+            try
+            {
+                if (entity is Product product)
+                {
+                    if (GetById<Product>(product.Id) == null) throw new BusinessException($"'{nameof(Product)}' {nameof(product.Name)} does not already exists!");
+
+                    var updatedRowId = SqlHelper.ExecuteScalar(_connectionString, CommandType.StoredProcedure, "UpdateProduct",
+                        new SqlParameter($"@{nameof(Product.Name)}", product.Name),
+                        new SqlParameter($"@{nameof(Product.SupplierId)}", product.SupplierId),
+                        new SqlParameter($"@{nameof(Product.CategoryId)}", product.CategoryId),
+                        new SqlParameter($"@{nameof(Product.QuantityPerUnit)}", product.QuantityPerUnit),
+                        new SqlParameter($"@{nameof(Product.UnitPrice)}", product.UnitPrice),
+                        new SqlParameter($"@{nameof(Product.UnitsInStock)}", product.UnitsInStock),
+                        new SqlParameter($"@{nameof(Product.UnitsOnOrder)}", product.UnitsOnOrder),
+                        new SqlParameter($"@{nameof(Product.ReorderLevel)}", product.ReorderLevel),
+                        new SqlParameter($"@{nameof(Product.Discontinued)}", product.Discontinued),
+                        new SqlParameter($"@{nameof(Product.Id)}", product.Id));
+
+                    return int.Parse(updatedRowId.ToString());
+                }
+
+                if (entity is Supplier supplier)
+                {
+                    if (GetById<Supplier>(supplier.Id) == null) throw new BusinessException($"'{nameof(Supplier)}' {nameof(supplier.Name)} does not already exists!");
+
+                    var updatedRowId = SqlHelper.ExecuteScalar(_connectionString, CommandType.StoredProcedure, "UpdateSupplier",
+                        new SqlParameter($"@{nameof(Supplier.Name)}", supplier.Name),
+                        new SqlParameter($"@{nameof(Supplier.ContactName)}", supplier.ContactName),
+                        new SqlParameter($"@{nameof(Supplier.ContactTitle)}", supplier.ContactTitle),
+                        new SqlParameter($"@{nameof(Supplier.Address)}", supplier.Address),
+                        new SqlParameter($"@{nameof(Supplier.City)}", supplier.City),
+                        new SqlParameter($"@{nameof(Supplier.Region)}", supplier.Region),
+                        new SqlParameter($"@{nameof(Supplier.PostalCode)}", supplier.PostalCode),
+                        new SqlParameter($"@{nameof(Supplier.Country)}", supplier.Country),
+                        new SqlParameter($"@{nameof(Supplier.Phone)}", supplier.Phone),
+                        new SqlParameter($"@{nameof(Supplier.Fax)}", supplier.Fax),
+                        new SqlParameter($"@{nameof(Supplier.HomePage)}", supplier.HomePage),
+                        new SqlParameter($"@{nameof(Supplier.Id)}", supplier.Id));
+
+                    return int.Parse(updatedRowId.ToString());
+                }
+
+                if (entity is Category category)
+                {
+                    if (GetById<Category>(category.Id) == null) throw new BusinessException($"'{nameof(Category)}' {nameof(category.Name)} does not already exists!");
+
+                    var updatedRowId = SqlHelper.ExecuteScalar(_connectionString, CommandType.StoredProcedure, "UpdateCategory",
+                        new SqlParameter($"@{nameof(Category.Name)}", category.Name),
+                        new SqlParameter($"@{nameof(Category.Description)}", category.Description),
+                        new SqlParameter($"@{nameof(Category.Picture)}", category.Picture),
+                        new SqlParameter($"@{nameof(Category.Id)}", category.Id));
+
+                    return int.Parse(updatedRowId.ToString());
+                }
+            }
+            catch (BusinessException sqlException)
+            {
+                //Log
+                return default;
+            }
+            catch (SqlException sqlException)
+            {
+                //Log
+                return default;
+            }
+            catch (Exception exception)
+            {
+                //Log
+                return default;
+            }
+
+            return default;
         }
 
         private void ValidateEntity(IEntity entity)
