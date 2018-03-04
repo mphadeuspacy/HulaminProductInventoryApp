@@ -96,9 +96,9 @@ namespace Gijima.Hulamin.Data.Persistence
             return default;
         }
 
-        public List<IEntity> GetAll()
+        public List<IEntity> GetAll<TEntity>()
         {
-            throw new NotImplementedException();
+            return new List<IEntity>();
         }
 
         public IEntity GetById<TEntity>(int id)

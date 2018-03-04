@@ -7,7 +7,7 @@ namespace Gijima.Hulamin.Data.Persistence
     {
         int Create(IEntity entity);
 
-        List<IEntity> GetAll();
+        List<IEntity> GetAll<TEntity>();
 
         IEntity GetById<TEntity>(int id);
 

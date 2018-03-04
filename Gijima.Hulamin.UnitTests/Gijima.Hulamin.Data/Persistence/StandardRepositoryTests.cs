@@ -5,6 +5,7 @@ using Gijima.Hulamin.Core.Validation.Concretes;
 using Gijima.Hulamin.Data.Persistence;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 
 namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
 {
@@ -241,6 +242,8 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         }
         #endregion
 
+        #region Update
+
         [TestMethod]
         public void Update_OnFailure_WhenTheEntityIsNull_ReturnFalse()
         {
@@ -351,6 +354,21 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
 
             // Assert
             Assert.AreEqual(_entity.Id, expectedResult);
+        }
+
+        #endregion
+
+        [TestMethod]
+        public void GetAll_OnFailure_WhenTheProductIsDataStoreIsEmpty_ThenReturnEmptyList()
+        {
+            // Arrange
+            var expectedResult = new List<Product>();
+
+            // Act 
+            var actualResult = _standardProductRepository.GetAll<Product>();
+
+            // Assert
+            Assert.AreEqual(0, actualResult.Count);
         }
 
         #region GetById
