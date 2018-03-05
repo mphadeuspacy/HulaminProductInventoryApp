@@ -77,17 +77,17 @@ namespace Gijima.Hulamin.Data.Persistence
                     return int.Parse(insertedRowId.ToString());
                 }
             }
-            catch (BusinessException sqlException)
+            catch (BusinessException)
             {
                 //Log
                 return default;
             }
-            catch (SqlException sqlException)
+            catch (SqlException)
             {
                 //Log
                 return default;
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 //Log
                 return default;
@@ -175,17 +175,17 @@ namespace Gijima.Hulamin.Data.Persistence
                     }
                 }
             }
-            catch (BusinessException businessException)
+            catch (BusinessException)
             {
                 //Log
                 return default;
             }
-            catch (SqlException sqlException)
+            catch (SqlException)
             {
                 //Log
                 return default;
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 //Log
                 return default;
@@ -331,17 +331,17 @@ namespace Gijima.Hulamin.Data.Persistence
                     return int.Parse(updatedRowId.ToString());
                 }
             }
-            catch (BusinessException businessException)
+            catch (BusinessException)
             {
                 //Log
                 return default;
             }
-            catch (SqlException sqlException)
+            catch (SqlException)
             {
                 //Log
                 return default;
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 //Log
                 return default;
@@ -372,22 +372,24 @@ namespace Gijima.Hulamin.Data.Persistence
 
                 if ((typeof(TEntity) == typeof(Product)))
                 {
+
+
                     var insertedRowId = SqlHelper.ExecuteScalar(_connectionString, CommandType.StoredProcedure, "DeleteProduct", new SqlParameter($"@{nameof(Product.Id)}", id));
 
                     return int.Parse(insertedRowId.ToString());
                 }
             }
-            catch (BusinessException sqlException)
+            catch (BusinessException)
             {
                 //Log
                 return default;
             }
-            catch (SqlException sqlException)
+            catch (SqlException)
             {
                 //Log
                 return default;
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 //Log
                 return default;
