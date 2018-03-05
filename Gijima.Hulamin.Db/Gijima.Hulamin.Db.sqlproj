@@ -82,12 +82,9 @@
     <Build Include="dbo\Stored Procedures\UpdateCategory.sql" />
     <Build Include="dbo\Stored Procedures\GetAllProducts.sql" />
     <Build Include="dbo\Views\Alphabetical list of products.sql" />
-    <Build Include="dbo\Views\Category Sales for 1997.sql" />
     <Build Include="dbo\Views\Current Product List.sql" />
-    <Build Include="dbo\Views\Product Sales for 1997.sql" />
     <Build Include="dbo\Views\Products Above Average Price.sql" />
     <Build Include="dbo\Views\Products by Category.sql" />
-    <Build Include="dbo\Views\Sales by Category.sql" />
     <Build Include="dbo\Stored Procedures\GetAllCategories.sql" />
     <Build Include="dbo\Stored Procedures\GetAllSuppliers.sql" />
     <Build Include="dbo\Stored Procedures\UpdateSupplier.sql" />

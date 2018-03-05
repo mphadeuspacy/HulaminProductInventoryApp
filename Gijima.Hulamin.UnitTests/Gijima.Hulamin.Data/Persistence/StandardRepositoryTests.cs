@@ -322,7 +322,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
             _standardProductRepository = new StandardRepository<Product>(_setUpSpecificationHandler, TestConnectionString);
 
             // Act 
-            int expectedResult = _standardProductRepository.Update(_entity);
+           int expectedResult = _standardProductRepository.Update(_entity);
 
             // Assert
             Assert.AreEqual(_entity.Id, expectedResult);
@@ -519,6 +519,32 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
 
             // Act 
             var actualResult = _standardProductRepository.Delete<Product>(_entity.Id);
+
+            // Assert
+            Assert.AreEqual(_entity.Id, actualResult);
+        }
+
+        [TestMethod]
+        public void Delete_OnSuccess_WhenTheSupplierExistsInTheDataStore_ThenReturnTheIdOfTheDeletedInstance()
+        {
+            // Arrange
+            _entity = new Supplier { Id = TestValidOne, Name = TestValidName};
+
+            // Act 
+            var actualResult = _standardSupplierRepository.Delete<Supplier>(_entity.Id);
+
+            // Assert
+            Assert.AreEqual(_entity.Id, actualResult);
+        }
+
+        [TestMethod]
+        public void Delete_OnSuccess_WhenTheCategoryExistsInTheDataStore_ThenReturnTheIdOfTheDeletedInstance()
+        {
+            // Arrange
+            _entity = new Category { Id = TestValidOne, Name = TestValidName };
+
+            // Act 
+            var actualResult = _standardCategoryRepository.Delete<Category>(_entity.Id);
 
             // Assert
             Assert.AreEqual(_entity.Id, actualResult);
