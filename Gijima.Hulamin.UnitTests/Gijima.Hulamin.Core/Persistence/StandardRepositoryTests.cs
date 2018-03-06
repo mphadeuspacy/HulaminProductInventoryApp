@@ -31,9 +31,9 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Core.Persistence
         {
             _setUpSpecificationHandler = new StandardSetUpSpecificationHandler();
 
-            _standardProductRepository = new StandardRepository<Product>(_setUpSpecificationHandler, TestConnectionString);
-            _standardSupplierRepository = new StandardRepository<Supplier>(_setUpSpecificationHandler, TestConnectionString);
-            _standardCategoryRepository = new StandardRepository<Category>(_setUpSpecificationHandler, TestConnectionString);
+            _standardProductRepository = new StandardRepository(_setUpSpecificationHandler, TestConnectionString);
+            _standardSupplierRepository = new StandardRepository(_setUpSpecificationHandler, TestConnectionString);
+            _standardCategoryRepository = new StandardRepository(_setUpSpecificationHandler, TestConnectionString);
 
             _entity = new Product { Id = TestValidOne, Name = TestValidName, Discontinued = TestValidDisconnection };
         }
@@ -46,7 +46,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Core.Persistence
 
             // Act
             //_standardProductRepository = _kernel.Get<StandardRepository<Product>>();
-            _standardSupplierRepository = _kernel.Get<StandardRepository<Supplier>>();
+            _standardSupplierRepository = _kernel.Get<StandardRepository>();
             //_standardCategoryRepository = _kernel.Get<StandardRepository<Category>>();
 
             // Assert
@@ -59,21 +59,21 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Core.Persistence
         public void StandardRepository_OnFailure_WhenTheConnectionStringIsNull_ThenArgumentExceptionThrown()
         {
             // Act & Assert
-            Assert.ThrowsException<ArgumentException>(() => new StandardRepository<Product>(_setUpSpecificationHandler, null));
+            Assert.ThrowsException<ArgumentException>(() => new StandardRepository(_setUpSpecificationHandler, null));
         }
 
         [TestMethod]
         public void StandardRepository_OnFailure_WhenTheConnectionStringIsEmpty_ThenArgumentExceptionThrown()
         {
             // Act & Assert
-            Assert.ThrowsException<ArgumentException>(() => new StandardRepository<Product>(_setUpSpecificationHandler, string.Empty));
+            Assert.ThrowsException<ArgumentException>(() => new StandardRepository(_setUpSpecificationHandler, string.Empty));
         }
 
         [TestMethod]
         public void StandardRepository_OnFailure_WhenTheConnectionStringIsWhiteSpace_ReturnArgumentExceptionThrown()
         {
             // Act & Assert
-            Assert.ThrowsException<ArgumentException>(() => new StandardRepository<Product>(_setUpSpecificationHandler, " "));
+            Assert.ThrowsException<ArgumentException>(() => new StandardRepository(_setUpSpecificationHandler, " "));
         }
 
         #region Create
@@ -252,7 +252,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Core.Persistence
         {
             // Arrange
             _entity = new Product { Id = TestValidOne, Name = TestValidName, Discontinued = TestValidDisconnection };
-            _standardProductRepository = new StandardRepository<Product>(_setUpSpecificationHandler, TestConnectionString);
+            _standardProductRepository = new StandardRepository(_setUpSpecificationHandler, TestConnectionString);
 
             // Act 
             _standardProductRepository.Create(_entity);
@@ -338,7 +338,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Core.Persistence
         {
             // Arrange
             _entity = new Product { Id = TestValidOne, Name = TestValidName, Discontinued = TestValidDisconnection };
-            _standardProductRepository = new StandardRepository<Product>(_setUpSpecificationHandler, TestConnectionString);
+            _standardProductRepository = new StandardRepository(_setUpSpecificationHandler, TestConnectionString);
 
             // Act 
            int expectedResult = _standardProductRepository.Update(_entity);
@@ -352,7 +352,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Core.Persistence
         {
             // Arrange
             _entity = new Supplier { Id = TestValidOne, Name = TestValidName };
-            _standardSupplierRepository = new StandardRepository<Supplier>(_setUpSpecificationHandler, TestConnectionString);
+            _standardSupplierRepository = new StandardRepository(_setUpSpecificationHandler, TestConnectionString);
 
             // Act 
             int expectedResult = _standardSupplierRepository.Update(_entity);
@@ -366,7 +366,7 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Core.Persistence
         {
             // Arrange
             _entity = new Category { Id = TestValidOne, Name = TestValidName, Picture = new byte[] { 1 } };
-            _standardCategoryRepository = new StandardRepository<Category>(_setUpSpecificationHandler, TestConnectionString);
+            _standardCategoryRepository = new StandardRepository(_setUpSpecificationHandler, TestConnectionString);
 
             // Act 
             int expectedResult = _standardCategoryRepository.Update(_entity);

@@ -6,7 +6,7 @@ namespace Gijima.Hulamin.Core.Persistence
     {
         public IRepository CreateRepository(ISetUpSpecificationHandler setUpSpecificationHandler, string connectionString)
         {
-            return new StandardRepository<TEntity>(setUpSpecificationHandler, connectionString);
+            return new StandardRepository(setUpSpecificationHandler, connectionString);
         }
     }
 }

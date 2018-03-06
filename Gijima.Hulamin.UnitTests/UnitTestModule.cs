@@ -26,7 +26,7 @@ namespace Gijima.Hulamin.UnitTests
     {
         protected override IRepository CreateInstance(IContext context)
         {
-            return new StandardRepository<Supplier>( new StandardSetUpSpecificationHandler(), @"Data Source =.\; Initial Catalog = Northwind; Persist Security Info=True;User ID = sa; Password=Khsph01@gmailcom");
+            return new StandardRepository( new StandardSetUpSpecificationHandler(), @"Data Source =.\; Initial Catalog = Northwind; Persist Security Info=True;User ID = sa; Password=Khsph01@gmailcom");
         }
     }
    

@@ -10,7 +10,7 @@ using Microsoft.ApplicationBlocks.Data;
 
 namespace Gijima.Hulamin.Core.Persistence
 {
-    public class StandardRepository<TEntity> : IRepository
+    public class StandardRepository : IRepository
     {
         private SpecificationHandler SpecificationHandler { get; }
         private readonly string _connectionString;
