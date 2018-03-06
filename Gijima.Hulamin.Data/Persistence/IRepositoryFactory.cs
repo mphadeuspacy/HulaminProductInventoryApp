@@ -4,6 +4,6 @@ namespace Gijima.Hulamin.Data.Persistence
 {
     public interface IRepositoryFactory<TEntity>
     {
-        IRepository<TEntity> CreateRepositoy(ISetUpSpecificationHandler setUpSpecificationHandler, string connectionString);
+        IRepository<TEntity> CreateRepository(ISetUpSpecificationHandler setUpSpecificationHandler, string connectionString);
     }
 }
