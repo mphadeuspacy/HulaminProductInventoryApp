@@ -89,5 +89,77 @@ namespace Gijima.Hulamin.WinFormsClient.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create.
+        /// </summary>
+        internal static string RollingProductsApp_ShowStatus_Create {
+            get {
+                return ResourceManager.GetString("RollingProductsApp_ShowStatus_Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string RollingProductsApp_ShowStatus_Delete {
+            get {
+                return ResourceManager.GetString("RollingProductsApp_ShowStatus_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleted Successfully!...
+        /// </summary>
+        internal static string RollingProductsApp_ShowStatus_Deleted_Successfully___ {
+            get {
+                return ResourceManager.GetString("RollingProductsApp_ShowStatus_Deleted_Successfully___", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        internal static string RollingProductsApp_ShowStatus_Error {
+            get {
+                return ResourceManager.GetString("RollingProductsApp_ShowStatus_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saved Successfully!...
+        /// </summary>
+        internal static string RollingProductsApp_ShowStatus_Saved_Successfully___ {
+            get {
+                return ResourceManager.GetString("RollingProductsApp_ShowStatus_Saved_Successfully___", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Something went wrong!. Please try again!...
+        /// </summary>
+        internal static string RollingProductsApp_ShowStatus_Something_went_wrong___Please_try_again___ {
+            get {
+                return ResourceManager.GetString("RollingProductsApp_ShowStatus_Something_went_wrong___Please_try_again___", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        internal static string RollingProductsApp_ShowStatus_Update {
+            get {
+                return ResourceManager.GetString("RollingProductsApp_ShowStatus_Update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updated Successfully!...
+        /// </summary>
+        internal static string RollingProductsApp_ShowStatus_Updated_Successfully___ {
+            get {
+                return ResourceManager.GetString("RollingProductsApp_ShowStatus_Updated_Successfully___", resourceCulture);
+            }
+        }
     }
 }

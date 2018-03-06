@@ -1,6 +1,6 @@
 ﻿namespace Gijima.Hulamin.WinFormsClient
 {
-    partial class RollingPruductsApp
+    partial class RollingProductsApp
     {
         /// <summary>
         /// Required designer variable.
@@ -53,7 +53,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.textPhone = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.textCounty = new System.Windows.Forms.TextBox();
+            this.textCountry = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEntities)).BeginInit();
             this.panel1.SuspendLayout();
@@ -168,7 +168,7 @@
             this.dataGridViewEntities.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewEntities.Size = new System.Drawing.Size(857, 348);
             this.dataGridViewEntities.TabIndex = 11;
-            this.dataGridViewEntities.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            this.dataGridViewEntities.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewEntities_CellClick);
             // 
             // panel1
             // 
@@ -189,7 +189,6 @@
             this.lblEntityId.TabIndex = 14;
             this.lblEntityId.Text = "ID";
             this.lblEntityId.Visible = false;
-            this.lblEntityId.Click += new System.EventHandler(this.lblID_Click);
             // 
             // label5
             // 
@@ -202,7 +201,6 @@
             this.label5.Size = new System.Drawing.Size(119, 26);
             this.label5.TabIndex = 4;
             this.label5.Text = "Suppliers";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // textAddress
             // 
@@ -323,16 +321,15 @@
             this.label7.Size = new System.Drawing.Size(53, 16);
             this.label7.TabIndex = 24;
             this.label7.Text = "Phone";
-            this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
-            // textCounty
+            // textCountry
             // 
-            this.textCounty.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textCounty.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textCounty.Location = new System.Drawing.Point(528, 241);
-            this.textCounty.Name = "textCounty";
-            this.textCounty.Size = new System.Drawing.Size(176, 22);
-            this.textCounty.TabIndex = 27;
+            this.textCountry.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textCountry.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textCountry.Location = new System.Drawing.Point(528, 241);
+            this.textCountry.Name = "textCountry";
+            this.textCountry.Size = new System.Drawing.Size(176, 22);
+            this.textCountry.TabIndex = 27;
             // 
             // label8
             // 
@@ -344,7 +341,6 @@
             this.label8.Size = new System.Drawing.Size(67, 16);
             this.label8.TabIndex = 26;
             this.label8.Text = "Country";
-            this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
             // RollingPruductsApp
             // 
@@ -352,7 +348,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Gijima.Hulamin.WinFormsClient.Properties.Resources.Backgrund1;
             this.ClientSize = new System.Drawing.Size(1037, 809);
-            this.Controls.Add(this.textCounty);
+            this.Controls.Add(this.textCountry);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.textPhone);
             this.Controls.Add(this.label7);
@@ -379,7 +375,7 @@
             this.Controls.Add(this.labelName);
             this.Name = "RollingPruductsApp";
             this.Text = "Rolling Product App";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.RollingProductsAppForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEntities)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -414,7 +410,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textPhone;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textCounty;
+        private System.Windows.Forms.TextBox textCountry;
         private System.Windows.Forms.Label label8;
     }
 }
