@@ -44,6 +44,9 @@
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.1.1.18\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -51,8 +54,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Gijima.Hulamin.Data\Persistence\StandardRepositoryTests.cs" />
+    <Compile Include="Gijima.Hulamin.Core\Persistence\StandardRepositoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTestModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -63,10 +67,9 @@
       <Project>{38BBE1AA-8B53-4B3D-B93D-6415A1C66898}</Project>
       <Name>Gijima.Hulamin.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Gijima.Hulamin.Data\Gijima.Hulamin.Data.csproj">
-      <Project>{5485d89b-0276-4279-85ff-80d952772410}</Project>
-      <Name>Gijima.Hulamin.Data</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Gijima.Hulamin.Core\DomainService\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

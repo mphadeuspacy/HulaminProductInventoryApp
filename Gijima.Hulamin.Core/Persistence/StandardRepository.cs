@@ -1,16 +1,16 @@
-﻿using System.Collections.Generic;
-using Gijima.Hulamin.Core.Entities;
-using System;
-using Gijima.Hulamin.Core.Validation.Abstracts;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using Gijima.Hulamin.Core.Exceptions;
-using Microsoft.ApplicationBlocks.Data;
 using System.Text;
+using Gijima.Hulamin.Core.Entities;
+using Gijima.Hulamin.Core.Exceptions;
+using Gijima.Hulamin.Core.Validation.Abstracts;
+using Microsoft.ApplicationBlocks.Data;
 
-namespace Gijima.Hulamin.Data.Persistence
+namespace Gijima.Hulamin.Core.Persistence
 {
-    public class StandardRepository<TEntity> : IRepository<TEntity>
+    public class StandardRepository<TEntity> : IRepository
     {
         private SpecificationHandler SpecificationHandler { get; }
         private readonly string _connectionString;

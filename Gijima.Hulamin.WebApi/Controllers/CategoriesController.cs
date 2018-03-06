@@ -2,14 +2,14 @@
 using System.Configuration;
 using System.Web.Http;
 using Gijima.Hulamin.Core.Entities;
+using Gijima.Hulamin.Core.Persistence;
 using Gijima.Hulamin.Core.Validation.Abstracts;
-using Gijima.Hulamin.Data.Persistence;
 
 namespace Gijima.Hulamin.WebApi.Controllers
 {
     public class CategoriesController : ApiController
     {
-        private readonly IRepository<Category> _categoryRepository;
+        private readonly IRepository _categoryRepository;
         private string ConnectionString => ConfigurationManager.AppSettings[nameof(ConnectionString)];
 
         public CategoriesController(IRepositoryFactory<Category> categoryRepositoryFactory, ISetUpSpecificationHandler specificationHandler)

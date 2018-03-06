@@ -5,9 +5,9 @@ namespace Gijima.Hulamin.Core.Validation.Abstracts
 {
     public abstract class SpecificationHandler
     {
-        protected SpecificationHandler _specificationHandlerSuccessor;
-       
-        public SpecificationHandler(SpecificationHandler specificationHandlerSuccessor)
+        protected readonly SpecificationHandler _specificationHandlerSuccessor;
+
+        protected SpecificationHandler(SpecificationHandler specificationHandlerSuccessor)
         {
             _specificationHandlerSuccessor = specificationHandlerSuccessor;
         }

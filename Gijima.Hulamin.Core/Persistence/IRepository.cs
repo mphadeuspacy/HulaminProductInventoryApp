@@ -1,9 +1,9 @@
-﻿using Gijima.Hulamin.Core.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Gijima.Hulamin.Core.Entities;
 
-namespace Gijima.Hulamin.Data.Persistence
+namespace Gijima.Hulamin.Core.Persistence
 {
-    public interface IRepository<TEntity>
+    public interface IRepository
     {
         int Create(IEntity entity);
 

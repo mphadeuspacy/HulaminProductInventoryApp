@@ -18,15 +18,15 @@ BEGIN
     UPDATE [dbo].[Products]
 	SET 
 	ProductName= @Name, 
-	SupplierId= @SupplierId, 
-	CategoryId= @CategoryId, 
+	SupplierID= @SupplierId, 
+	CategoryID= @CategoryId, 
 	QuantityPerUnit= @QuantityPerUnit, 
 	UnitPrice= @UnitPrice, 
 	UnitsInStock= @UnitsInStock, 
 	UnitsOnOrder= @UnitsOnOrder, 
 	ReorderLevel= @ReorderLevel, 
 	Discontinued= @Discontinued
-	WHERE @Id = ProductId;
+	WHERE @Id = ProductID;
 	
 	SELECT @Id;
 END

@@ -1,22 +1,23 @@
-﻿using Gijima.Hulamin.Core.Entities;
+﻿using System;
+using System.Collections.Generic;
+using Gijima.Hulamin.Core.Entities;
 using Gijima.Hulamin.Core.Exceptions;
+using Gijima.Hulamin.Core.Persistence;
 using Gijima.Hulamin.Core.Validation.Abstracts;
 using Gijima.Hulamin.Core.Validation.Concretes;
-using Gijima.Hulamin.Data.Persistence;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
+using Ninject;
 
-namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
+namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Core.Persistence
 {
     [TestClass]
     public class StandardRepositoryTests
     {
         private ISetUpSpecificationHandler _setUpSpecificationHandler;
-        private IRepository<Product> _standardProductRepository;
+        private IRepository _standardProductRepository;
         private IEntity _entity;
-        private IRepository<Supplier> _standardSupplierRepository;
-        private IRepository<Category> _standardCategoryRepository;
+        private IRepository _standardSupplierRepository;
+        private IRepository _standardCategoryRepository;
 
         private string TestValidName => "ValidName";
         private string TestConnectionString => @"Data Source =.\; Initial Catalog = Northwind; Persist Security Info=True;User ID = sa; Password=Khsph01@gmailcom";
@@ -29,12 +30,30 @@ namespace Gijima.Hulamin.UnitTests.Gijima.Hulamin.Data
         public void SetUp()
         {
             _setUpSpecificationHandler = new StandardSetUpSpecificationHandler();
+
             _standardProductRepository = new StandardRepository<Product>(_setUpSpecificationHandler, TestConnectionString);
             _standardSupplierRepository = new StandardRepository<Supplier>(_setUpSpecificationHandler, TestConnectionString);
             _standardCategoryRepository = new StandardRepository<Category>(_setUpSpecificationHandler, TestConnectionString);
+
             _entity = new Product { Id = TestValidOne, Name = TestValidName, Discontinued = TestValidDisconnection };
         }
-              
+
+        [TestMethod]
+        public void CanCreateStandardRepositoryInstancesSuccessfully()
+        {
+            // Arrange
+            var _kernel = new StandardKernel(new UnitTestModule());
+
+            // Act
+            //_standardProductRepository = _kernel.Get<StandardRepository<Product>>();
+            _standardSupplierRepository = _kernel.Get<StandardRepository<Supplier>>();
+            //_standardCategoryRepository = _kernel.Get<StandardRepository<Category>>();
+
+            // Assert
+            //Assert.IsNull(_standardProductRepository);
+            Assert.IsNull(_standardSupplierRepository);
+            //Assert.IsNull(_standardCategoryRepository);
+        }
 
         [TestMethod]
         public void StandardRepository_OnFailure_WhenTheConnectionStringIsNull_ThenArgumentExceptionThrown()
