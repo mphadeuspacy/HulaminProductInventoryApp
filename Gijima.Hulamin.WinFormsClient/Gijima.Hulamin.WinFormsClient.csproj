@@ -47,11 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="RollingPruductsApp.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="RollingPruductsApp.Designer.cs">
+      <DependentUpon>RollingPruductsApp.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -63,7 +63,11 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="RollingPruductsApp.resx">
+      <DependentUpon>RollingPruductsApp.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -76,6 +80,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Backgrund.jpg" />
+    <Content Include="Assets\Backgrund1.jpg" />
+    <Content Include="Assets\hd wallpapers background wallpaper background hd wallpaper background ....jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Gijima.Hulamin.Core\Gijima.Hulamin.Core.csproj">
+      <Project>{38BBE1AA-8B53-4B3D-B93D-6415A1C66898}</Project>
+      <Name>Gijima.Hulamin.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
