@@ -1,6 +1,6 @@
 # HulaminProductInventoryApp
 
-Simply Rolled Products inventory system.
+A simple Rolled Products inventory system.
 
 Preconditions before running the source code.
 1. SQL Server database access.
@@ -21,3 +21,4 @@ Limitations:
 3. Code base services, APIS, & Unit Tests only test for these.
 4. Test database not static, so test are sometimes failing on type of data stored, not correct way, but suffice for now.
 5. DIs not yet configured to work as IoC containers.
+6. Not all validations implemented, especially on the UI.
