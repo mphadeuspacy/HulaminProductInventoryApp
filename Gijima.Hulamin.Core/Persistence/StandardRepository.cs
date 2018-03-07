@@ -6,6 +6,7 @@ using System.Text;
 using Gijima.Hulamin.Core.Entities;
 using Gijima.Hulamin.Core.Exceptions;
 using Gijima.Hulamin.Core.Validation.Abstracts;
+using Gijima.Hulamin.Core.Validation.Concretes;
 using Microsoft.ApplicationBlocks.Data;
 
 namespace Gijima.Hulamin.Core.Persistence
@@ -23,15 +24,15 @@ namespace Gijima.Hulamin.Core.Persistence
 
         public int Create(IEntity entity)
         {
-            ValidateEntity(entity);
-
             try
             {
                 switch (entity)
                 {
                     case Category category:
                     {
-                        if (GetById<Category>(category.Id) != null) throw new BusinessException($"'{nameof(Category)}' {nameof(category.Name)} already exists!");
+                        if (new EntityNameRequiredSpecification<Category>().IsSatisfiedBy(category) == false) throw new BusinessException($"{nameof(Create)}: '{nameof(category)}' category name is required!'");
+
+                        if (category.Id != default && GetById<Category>(category.Id) != null) throw new BusinessException($"'{nameof(Category)}' {nameof(category.Name)} already exists!");
 
                         var insertedRowId = SqlHelper.ExecuteScalar(_connectionString, CommandType.StoredProcedure, "CreateCategory",
                             new SqlParameter($"@{nameof(Category.Name)}", category.Name),
@@ -42,7 +43,9 @@ namespace Gijima.Hulamin.Core.Persistence
                     }
                     case Supplier supplier:
                     {
-                        if (GetById<Supplier>(supplier.Id) != null) throw new BusinessException($"'{nameof(Supplier)}' {nameof(supplier.Name)} already exists!");
+                        if(new EntityNameRequiredSpecification<Supplier>().IsSatisfiedBy(supplier) == false) throw new BusinessException($"{nameof(Create)}: '{nameof(supplier)}' company name is required!'");
+
+                        if (supplier.Id != default && GetById<Supplier>(supplier.Id) != null) throw new BusinessException($"'{nameof(Supplier)}' {nameof(supplier.Name)} already exists!");
 
                         var insertedRowId = SqlHelper.ExecuteScalar(_connectionString, CommandType.StoredProcedure, "CreateSupplier",
                             new SqlParameter($"@{nameof(Supplier.Name)}", supplier.Name),
@@ -61,7 +64,9 @@ namespace Gijima.Hulamin.Core.Persistence
                     }
                     case Product product:
                     {
-                        if (GetById<Product>(product.Id) != null) throw new BusinessException($"'{nameof(Product)}' {nameof(product.Name)} already exists!");
+                        if (new EntityNameRequiredSpecification<Product>().IsSatisfiedBy(product) == false) throw new BusinessException($"{nameof(Create)}: '{nameof(product)}' product name is required!'");
+
+                        if (product.Id != default && GetById<Product>(product.Id) != null) throw new BusinessException($"'{nameof(Product)}' {nameof(product.Name)} already exists!");
 
                         var insertedRowId = SqlHelper.ExecuteScalar(_connectionString, CommandType.StoredProcedure, "CreateProduct",
                             new SqlParameter($"@{nameof(Product.Name)}", product.Name),
@@ -275,10 +280,10 @@ namespace Gijima.Hulamin.Core.Persistence
 
         public int Update(IEntity entity)
         {
-            ValidateEntity(entity);
-
             try
             {
+                ValidateEntity(entity);
+
                 switch (entity)
                 {
                     case Product product:

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,13 @@ namespace Gijima.Hulamin.WinFormsClient
     {
         private readonly HttpClient _httpClient = new HttpClient();
 
+        private string BaseUrlForApi => //Defaults to local IIS uri, otherwise reads the config API uri base
+            string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings[nameof(BaseUrlForApi)])
+                ? "http://localhost:53233/api"
+                : ConfigurationManager.AppSettings[nameof(BaseUrlForApi)];
+
+        private const string Suppliers = "Suppliers";
+
         public RollingProductsApp()
         {
             InitializeComponent();
@@ -23,7 +31,7 @@ namespace Gijima.Hulamin.WinFormsClient
         {
             try
             {
-                Display();
+                BindSuppliers();
             }
             catch (Exception exception)
             {
@@ -31,9 +39,9 @@ namespace Gijima.Hulamin.WinFormsClient
             }
         }
         
-        private async Task Display()
+        private async Task BindSuppliers()
         {
-            var messageResponse = await _httpClient.GetAsync("http://localhost:53233/api/suppliers");
+            var messageResponse = await _httpClient.GetAsync($"{BaseUrlForApi}/{Suppliers}");
 
             if (messageResponse.IsSuccessStatusCode == false) return;
 
@@ -48,7 +56,9 @@ namespace Gijima.Hulamin.WinFormsClient
         {
             var supplier = BindSupplier();
            
-            var result = CreateSupplier(supplier).Result; 
+            var result = CreateSupplier(supplier).Result;
+
+            BindSuppliers();
 
             ShowStatus(result, "Save");
         }
@@ -57,7 +67,6 @@ namespace Gijima.Hulamin.WinFormsClient
         {
             return new Supplier
             {
-                Id = int.Parse(lblEntityId.Text),
                 Name = textCompanyName.Text,
                 ContactName = textContactName.Text,
                 ContactTitle = textContactTitle.Text,
@@ -76,7 +85,7 @@ namespace Gijima.Hulamin.WinFormsClient
         {
             string serializedItem = supplier.SerializeToJsonObject();
 
-            var messageResponse = await _httpClient.PostAsync("http://localhost:53233/api/suppliers",  new StringContent(serializedItem, Encoding.UTF8, "application/json"));
+            var messageResponse = await _httpClient.PostAsync($"{BaseUrlForApi}/{Suppliers}",  new StringContent(serializedItem, Encoding.UTF8, "application/json"));
 
             if(messageResponse.IsSuccessStatusCode == false) return false;
            
@@ -89,6 +98,8 @@ namespace Gijima.Hulamin.WinFormsClient
 
             bool result = UpdateSuppliers(supplier).Result;
 
+            BindSuppliers();
+
             ShowStatus(result, Resources.RollingProductsApp_ShowStatus_Update);
         }
 
@@ -96,7 +107,7 @@ namespace Gijima.Hulamin.WinFormsClient
         {
             string serializedItem = supplier.SerializeToJsonObject();
 
-            var messageResponse = await _httpClient.PutAsync("http://localhost:53233/api/suppliers", new StringContent(serializedItem, Encoding.UTF8, "application/json"));
+            var messageResponse = await _httpClient.PutAsync($"{BaseUrlForApi}/{Suppliers}", new StringContent(serializedItem, Encoding.UTF8, "application/json"));
 
             if (messageResponse.IsSuccessStatusCode == false) return false;
 
@@ -107,12 +118,14 @@ namespace Gijima.Hulamin.WinFormsClient
         {
             bool result = DeleteSuppliers(lblEntityId.Text.Trim()).Result;
 
+            BindSuppliers();
+
             ShowStatus(result, Resources.RollingProductsApp_ShowStatus_Delete);
         }
 
         private async Task<bool> DeleteSuppliers(string id) 
         {
-           var messageResponse = await _httpClient.DeleteAsync($"http://localhost:53233/api/suppliers/Delete/{id}");
+           var messageResponse = await _httpClient.DeleteAsync($"{BaseUrlForApi}/{Suppliers}/Delete/{id}");
 
             if (messageResponse.IsSuccessStatusCode == false) return false;
 
@@ -164,7 +177,7 @@ namespace Gijima.Hulamin.WinFormsClient
 
             ClearFields();
 
-            await Display();
+            await BindSuppliers();
         }
 
         private void ClearFields() // Clear the fields after Insert or Update or Delete operation

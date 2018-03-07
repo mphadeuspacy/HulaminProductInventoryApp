@@ -28,7 +28,7 @@ namespace Gijima.Hulamin.Core.Validation.Concretes
                 throw new BusinessException($"{nameof(ProductSpecificationHandler)}.{nameof(HandleSpecificationRequest)}: {nameof(BusinessException)} thrown!");
             }
 
-            if (_specificationHandlerSuccessor != null) _specificationHandlerSuccessor.HandleSpecificationRequest(entity);
+            _specificationHandlerSuccessor?.HandleSpecificationRequest(entity);
         }
     }
 }
