@@ -27,7 +27,7 @@ namespace Gijima.Hulamin.WinFormsClient
             InitializeComponent();
         }
 
-        private void RollingProductsAppForm_Load(object sender, EventArgs e)
+        public void RollingProductsAppForm_Load(object sender, EventArgs e)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace Gijima.Hulamin.WinFormsClient
             dataGridViewEntities.DataSource = supplierList;
         }
 
-        private void btnCreate_Click(object sender, EventArgs e)
+        public void btnCreate_Click(object sender, EventArgs e)
         {
             var supplier = BindSupplier();
            
@@ -62,11 +62,12 @@ namespace Gijima.Hulamin.WinFormsClient
 
             ShowStatus(result, "Save");
         }
-
+  
         private Supplier BindSupplier()
         {
             return new Supplier
             {
+                Id = int.TryParse(lblEntityId.Text.Trim(), out int id) ? id : 0,
                 Name = textCompanyName.Text,
                 ContactName = textContactName.Text,
                 ContactTitle = textContactTitle.Text,
@@ -92,7 +93,7 @@ namespace Gijima.Hulamin.WinFormsClient
             return int.Parse(messageResponse.Content.ReadAsStringAsync().Result) != 0;
         }
 
-        private void btnUpdate_Click(object sender, EventArgs e) // Update button click event
+        public void btnUpdate_Click(object sender, EventArgs e) // Update button click event
         {
             var supplier = BindSupplier();
 
@@ -114,7 +115,7 @@ namespace Gijima.Hulamin.WinFormsClient
             return int.Parse(messageResponse.Content.ReadAsStringAsync().Result) != 0;
         }
 
-        private void btnDelete_Click(object sender, EventArgs e)
+        public void btnDelete_Click(object sender, EventArgs e)
         {
             bool result = DeleteSuppliers(lblEntityId.Text.Trim()).Result;
 
@@ -132,7 +133,7 @@ namespace Gijima.Hulamin.WinFormsClient
             return int.Parse(messageResponse.Content.ReadAsStringAsync().Result) != 0;
         }
 
-        private void dataGridViewEntities_CellClick(object sender, DataGridViewCellEventArgs e) //Calling Datagridview cell click to Update and Delete
+        public void dataGridViewEntities_CellClick(object sender, DataGridViewCellEventArgs e) //Calling Datagridview cell click to Update and Delete
         {
             if (dataGridViewEntities.Rows.Count <= 0) return;
 
