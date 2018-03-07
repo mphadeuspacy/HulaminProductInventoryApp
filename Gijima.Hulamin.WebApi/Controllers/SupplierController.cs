@@ -4,16 +4,16 @@ using Gijima.Hulamin.Core.Entities;
 
 namespace Gijima.Hulamin.WebApi.Controllers
 {
-    public class SupplierController : ApiController
+    public class SuppliersController : ApiController
     {
         private readonly ISupplierService _supplierService;
 
-        public SupplierController()
+        public SuppliersController()
         {
             _supplierService = new SupplierService();
         }
 
-        // GET api/values
+        // GET api/Suppliers
         public IHttpActionResult Get()
         {
             var suppliers = _supplierService.GetAllSuppliers();
@@ -23,7 +23,7 @@ namespace Gijima.Hulamin.WebApi.Controllers
             return Ok(suppliers);
         }
 
-        // GET api/values/5
+        // GET api/Suppliers/5
         public IHttpActionResult Get(int id)
         {
             var supplier = _supplierService.GetSupplierById(id);
@@ -33,19 +33,19 @@ namespace Gijima.Hulamin.WebApi.Controllers
             return Ok(supplier);
         }
 
-        // POST api/values
+        // POST api/Suppliers
         public IHttpActionResult Post(Supplier supplier)
         {
             return Ok(_supplierService.CreateSupplier(supplier));
         }
 
-        // PUT api/values/5
+        // PUT api/Suppliers/5
         public IHttpActionResult Put(Supplier supplier)
         {
             return Ok(_supplierService.UpdateSupplier(supplier));
         }
 
-        // DELETE api/values/5
+        // DELETE api/Suppliers/5
         public IHttpActionResult Delete(int id)
         {
             return Ok(_supplierService.DeleteSupplier(id));

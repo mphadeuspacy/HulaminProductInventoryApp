@@ -29,8 +29,10 @@ namespace Gijima.Hulamin.Core.DomainServices
 
         public SupplierService()
         {
-            _supplierRepository = new RepositoryFactory<Supplier>().CreateRepository(new StandardSetUpSpecificationHandler(), ConnectionString);
+            _supplierRepository = new RepositoryFactory<Supplier>()
+                .CreateRepository(new StandardSetUpSpecificationHandler(), string.IsNullOrWhiteSpace(ConnectionString) == false ? ConnectionString : throw new ArgumentException());
         }
+
         public SupplierService(IRepositoryFactory<Supplier> supplierRepositoryFactory, ISetUpSpecificationHandler specificationHandler)
         {
             _supplierRepository =

@@ -21,10 +21,17 @@ namespace Gijima.Hulamin.WinFormsClient
 
         private void RollingProductsAppForm_Load(object sender, EventArgs e)
         {
-            Display();
+            try
+            {
+                Display();
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
         }
-
-        public async Task Display()
+        
+        private async Task Display()
         {
             var messageResponse = await _httpClient.GetAsync("http://localhost:53233/api/suppliers");
 
@@ -32,12 +39,12 @@ namespace Gijima.Hulamin.WinFormsClient
 
             var suppliers = messageResponse.Content.ReadAsStringAsync().Result;
 
-            var supplierList = suppliers.DeserializeObject<Supplier>();
+            var supplierList = suppliers.DeserializeObject<List<Supplier>>();
 
             dataGridViewEntities.DataSource = supplierList;
         }
 
-        public void btnCreate_Click(object sender, EventArgs e)
+        private void btnCreate_Click(object sender, EventArgs e)
         {
             var supplier = BindSupplier();
            
@@ -76,7 +83,7 @@ namespace Gijima.Hulamin.WinFormsClient
             return int.Parse(messageResponse.Content.ReadAsStringAsync().Result) != 0;
         }
 
-        public void btnUpdate_Click(object sender, EventArgs e) // Update button click event
+        private void btnUpdate_Click(object sender, EventArgs e) // Update button click event
         {
             var supplier = BindSupplier();
 
@@ -96,7 +103,7 @@ namespace Gijima.Hulamin.WinFormsClient
             return int.Parse(messageResponse.Content.ReadAsStringAsync().Result) != 0;
         }
 
-        public void btnDelete_Click(object sender, EventArgs e)
+        private void btnDelete_Click(object sender, EventArgs e)
         {
             bool result = DeleteSuppliers(lblEntityId.Text.Trim()).Result;
 
@@ -112,25 +119,24 @@ namespace Gijima.Hulamin.WinFormsClient
             return int.Parse(messageResponse.Content.ReadAsStringAsync().Result) != 0;
         }
 
-        public void dataGridViewEntities_CellClick(object sender, DataGridViewCellEventArgs e) //Calling Datagridview cell click to Update and Delete
+        private void dataGridViewEntities_CellClick(object sender, DataGridViewCellEventArgs e) //Calling Datagridview cell click to Update and Delete
         {
-            if (dataGridViewEntities.Rows.Count > 0)
+            if (dataGridViewEntities.Rows.Count <= 0) return;
+
+            foreach (DataGridViewRow row in dataGridViewEntities.SelectedRows) // foreach datagridview selected rows values
             {
-                foreach (DataGridViewRow row in dataGridViewEntities.SelectedRows) // foreach datagridview selected rows values
-                {
-                    lblEntityId.Text = row.Cells[0].Value.ToString();
-                    textCompanyName.Text = row.Cells[1].Value.ToString();
-                    textContactName.Text = row.Cells[2].Value.ToString();
-                    textContactTitle.Text = row.Cells[3].Value.ToString();
-                    textAddress.Text = row.Cells[4].Value.ToString();
-                    textCity.Text = row.Cells[5].Value.ToString();
-                    textRegion.Text = row.Cells[6].Value.ToString();
-                    textPostalCode.Text = row.Cells[7].Value.ToString();
-                    textCountry.Text = row.Cells[8].Value.ToString();
-                    textPostalCode.Text = row.Cells[9].Value.ToString();
-                    textPhone.Text = row.Cells[10].Value.ToString();
-                    textFax.Text = row.Cells[11].Value.ToString();
-                }
+                lblEntityId.Text = row.Cells[0].Value.ToString();
+                textCompanyName.Text = row.Cells[1].Value.ToString();
+                textContactName.Text = row.Cells[2].Value.ToString();
+                textContactTitle.Text = row.Cells[3].Value.ToString();
+                textAddress.Text = row.Cells[4].Value.ToString();
+                textCity.Text = row.Cells[5].Value.ToString();
+                textRegion.Text = row.Cells[6].Value.ToString();
+                textPostalCode.Text = row.Cells[7].Value.ToString();
+                textCountry.Text = row.Cells[8].Value.ToString();
+                textPostalCode.Text = row.Cells[9].Value.ToString();
+                textPhone.Text = row.Cells[10].Value.ToString();
+                textFax.Text = row.Cells[11].Value.ToString();
             }
         }
 
@@ -155,7 +161,9 @@ namespace Gijima.Hulamin.WinFormsClient
             {
                 MessageBox.Show(Resources.RollingProductsApp_ShowStatus_Something_went_wrong___Please_try_again___, Resources.RollingProductsApp_ShowStatus_Error, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+
             ClearFields();
+
             await Display();
         }
 
